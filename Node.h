@@ -9,12 +9,18 @@
 #define _NODE_H_
 
 #include "Abstract_Node.h"
+#include <iostream>
+#include <vector>
+#include "Connection.h"
 
 class Node : public Abstract_Node {
 public:
-  
+  Node();
+  ~Node();
 
 private:
+  float output;
+  std::vector<Connection *> outputWeights;
 };
 
 #endif

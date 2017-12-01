@@ -21,6 +21,8 @@ void Builder::createLayer(int hm_nodes) {
     Abstract_Node * node = new Node();
     layer->addNode(node);
   }
+
+  net->addLayer(layer);
 }
 
 Net * Builder::getNet() {

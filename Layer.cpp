@@ -8,7 +8,7 @@
 #include "Layer.h"
 
 Layer::Layer() {
-
+  std::cout << "Created layer" << std::endl;
 }
 
 Layer::~Layer() {
@@ -19,6 +19,7 @@ Layer::~Layer() {
 }
 
 void Layer::addNode(Abstract_Node * node) {
+  std::cout << "Added node to layer" << std::endl;
   this->nodes.push_back(node);
 }
 

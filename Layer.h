@@ -9,6 +9,7 @@
 #define _LAYER_H_
 
 #include "Abstract_Layer.h"
+#include <iostream>
 
 class Layer : public Abstract_Layer {
 public:
