@@ -8,9 +8,9 @@
 #include "Preprocessor.h"
 
 //Constructor
-Preprocessor::Preprocessor() :
-  dataFile("breast-cancer-honors.csv", std::ios::in)
- {}
+Preprocessor::Preprocessor() : dataFile("breast-cancer-honors.csv", std::ios::in) {
+   std::cout << "+----> Preprocessor built" << std::endl;
+}
 
 Preprocessor::~Preprocessor() {
 
@@ -38,7 +38,7 @@ std::vector<int> * Preprocessor::getNextData() {
     }
 
     //convert those to ints
-    std::vector<int> * data;
+    std::vector<int> * data = new std::vector<int>();
     for (int i=0; i<inputs_s.size(); i++) {
       data->push_back(std::stoi(inputs_s.at(i)));
     }

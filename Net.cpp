@@ -17,10 +17,11 @@ Net::~Net() {
 
 void Net::feedForward(std::vector<int> * inputs_i) {
 
-  std::vector<float> inputs;
+  std::vector<float> inputs;// = std::vector<float> ();
   for (int i=0; i<inputs_i->size(); i++) {
-    inputs[i] = (int)inputs_i->at(i);
+    inputs.push_back((int)inputs_i->at(i));
   }
+
   delete inputs_i;
 
   //Give the input neurons initial input values
@@ -36,14 +37,13 @@ void Net::feedForward(std::vector<int> * inputs_i) {
       this->layers[layerCount]->getNodeAt(nodeCount)->feedForward(this->layers[layerCount-1]);
     }
   }
-
 }
 
 void Net::backProp(std::vector<int> * targets_i) { //TODO: See if we can implement iterator or visitor pattern here
 
   std::vector<float> targets;
   for (int i=0; i<targets_i->size(); i++) {
-    targets[i] = (int)targets_i->at(i);
+    targets.push_back((int)targets_i->at(i));
   }
   delete targets_i;
 
@@ -91,7 +91,7 @@ void Net::backProp(std::vector<int> * targets_i) { //TODO: See if we can impleme
 }
 
 std::vector<float> * Net::getResults() {
-  std::vector<float> * results;
+  std::vector<float> * results = new std::vector<float>();
 
 	for (int i = 0; i < this->layers.back()->size() - 1; i++) {
 		results->push_back(this->layers.back()->getNodeAt(i)->getOutput());

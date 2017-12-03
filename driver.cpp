@@ -17,7 +17,7 @@
 
 int main (int argc, char * argv [])
 {
-  std::cout << "Welcome! Please enter the design of your neural network. Ex: '9,5,2'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 2.\n\nNote: Your design must begin with 9 nodes and end with 2 nodes in order to fit the dataset." << std::endl;
+  std::cout << "Welcome! Please enter the design of your neural network. Ex: '9,5,2'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 1.\n\nNote: Your design must begin with 9 nodes and end with 2 nodes in order to fit the dataset." << std::endl;
 
   std::string input;
   std::cout << "> ";
@@ -38,6 +38,8 @@ int main (int argc, char * argv [])
     inputs.push_back(std::stoi(inputs_s.at(i)));
   }
 
+  std::cout << "-> Building the net" << std::endl;
+
   //Use a builder to create the net with these instructions
   Abstract_Builder * builder = new Builder();
   for (int i=0; i<inputs.size(); i++) {
@@ -48,7 +50,11 @@ int main (int argc, char * argv [])
     }
   }
 
+  std::cout << "-> Built the net" << std::endl;
+
   Net * net = builder->getNet();
+
+  std::cout << "-> Got net from builder" << std::endl;
 
   std::cout << "How many epochs would you like to train?" << std::endl;
   std::string input2;
@@ -58,11 +64,17 @@ int main (int argc, char * argv [])
 
   Preprocessor pp;
 
+  std::cout << "-> Bouta train" << std::endl;
+
+  int line = 0;
   for (int i=0; i<epochs; i++) {
-    while(!pp.isFinished()) {
+    //while(!pp.isFinished()) {
+    while(line < 699) { //TODO fer lerp it
+      std::cout << "Line: " << line++ << std::endl;
+
       std::vector<int> * data = pp.getNextData();
 
-      std::vector<int> * features;
+      std::vector<int> * features = new std::vector<int>();;
       for (int i=0; i<data->size()-1; i++) {
         features->push_back(data->at(i));
       }
@@ -73,11 +85,13 @@ int main (int argc, char * argv [])
       }
       std::cout << std::endl;
 
-      std::vector<int> * label;
+      std::vector<int> * label = new std::vector<int>();
       label->push_back(data->at(data->size()-1));
+
       delete data;
 
       net->feedForward(features);
+
       std::vector<float> * results = net->getResults();
 
       std::cout << "Output : ";
