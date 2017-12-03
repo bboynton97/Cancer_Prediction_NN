@@ -8,26 +8,102 @@
 #include "Net.h"
 
 Net::Net() {
-  std::cout << "Created net" << std::endl;
+
 }
 
 Net::~Net() {
 
 }
 
-void Net::feedForward(std::vector<float> &inputs) {
+void Net::feedForward(std::vector<int> * inputs_i) {
+
+  std::vector<float> inputs;
+  for (int i=0; i<inputs_i->size(); i++) {
+    inputs[i] = (int)inputs_i->at(i);
+  }
+  delete inputs_i;
+
+  //Give the input neurons initial input values
+  for (int i=0; i<inputs.size(); i++) {
+    this->layers[0]->getNodeAt(i)->setOutput(inputs[i]);
+  }
+
+  //Propegate data through each layer then each node
+  //TODO: Add Iterator pattern or Visitor pattern here.
+
+  for (int layerCount=1; layerCount<this->layers.size(); layerCount++) {
+    for (int nodeCount=0; nodeCount<this->layers[layerCount]->size() - 1; layerCount++) {
+      this->layers[layerCount]->getNodeAt(nodeCount)->feedForward(this->layers[layerCount-1]);
+    }
+  }
 
 }
 
-void Net::backProp(std::vector<float> &targets) {
+void Net::backProp(std::vector<int> * targets_i) { //TODO: See if we can implement iterator or visitor pattern here
 
+  std::vector<float> targets;
+  for (int i=0; i<targets_i->size(); i++) {
+    targets[i] = (int)targets_i->at(i);
+  }
+  delete targets_i;
+
+  // Loss function
+  // We need to see how far we are off from the intended value and adjust the net to fit that
+  // Using Root Mean Square loss function
+
+  Abstract_Layer * lastLayer = this->layers.back();
+  this->error = 0.0;
+
+  for (int i=0; i<lastLayer->size(); i++) { //Loop through all nodes in the last layer
+    float delta = targets.at(i) - lastLayer->getNodeAt(i)->getOutput(); //Get how far we were off for this node
+    this->error += (delta * delta); //Add the square of that to error
+  }
+
+  this->error = this->error / (lastLayer->size() - 1); //Divide that by n-1
+  this->error = sqrt(this->error); //Square root of that is RMS error
+
+  //Get the gradients for the final layer
+  for (int i=0; i<lastLayer->size(); i++) {
+    lastLayer->getNodeAt(i)->calculateOutputGradients(targets[i]);
+  }
+
+  //Get the hidden layer's gradients
+  for (int i = this->layers.size() - 2; i > 0; i--) { //All layers but first and last, going backwards (i.e. back propegation)
+    Abstract_Layer * hiddenLayer = this->layers[i];
+    Abstract_Layer * nextLayer = this->layers[i+1];
+
+    for (int p = 0; p < hiddenLayer->size(); p++) {
+      hiddenLayer->getNodeAt(p)->calculateHiddenGradients(nextLayer);
+    }
+  }
+
+  // Update the connection weights so it can be more accurate next time it feeds Forward
+  for (int i = this->layers.size() - 1; i > 0; i--) { // Loop through backwards again
+		Abstract_Layer * layer = this->layers[i];
+		Abstract_Layer * prevLayer = this->layers[i-1];
+
+		for (int p = 0; p < layer->size() - 1; p++) { //Loop through it's nodes
+			layer->getNodeAt(p)->updateInputWeights(prevLayer);
+		}
+	}
+
+  this->avgError = (this->avgError * 10 + this->error) / (11); //Get the error over the past 10 rows
 }
 
-void Net::getResults() {
+std::vector<float> * Net::getResults() {
+  std::vector<float> * results;
 
+	for (int i = 0; i < this->layers.back()->size() - 1; i++) {
+		results->push_back(this->layers.back()->getNodeAt(i)->getOutput());
+	}
+
+  return results;
 }
 
 void Net::addLayer(Abstract_Layer * layer) {
-  std::cout << "Added layer" << std::endl;
   this->layers.push_back(layer);
+}
+
+float Net::getAvgError() {
+  return this->avgError;
 }

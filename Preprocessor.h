@@ -13,15 +13,18 @@
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
+#include <string>
+#include <iostream>
 
 class Preprocessor {
 public:
-  Preprocessor(std::string filename);
+  Preprocessor();
   ~Preprocessor();
   bool isFinished();
   void getData(std::vector<int> &data);
-  int getNextInputs(std::vector<float> &inputs);
-  int getTargetOutputs(std::vector<float> &targetOutputs);
+  std::vector<int> * getNextData();
+  //int getNextInputs(std::vector<float> &inputs);
+  //int getTargetOutputs(std::vector<float> &targetOutputs);
 
 private:
   std::ifstream dataFile;

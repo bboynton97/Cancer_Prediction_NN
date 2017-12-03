@@ -18,7 +18,7 @@ class Builder : public Abstract_Builder {
 public:
   Builder();
   virtual ~Builder();
-  virtual void createLayer(int hm_nodes);
+  virtual void createLayer(int hm_nodes, int hm_connectionsPerNode);
   virtual Net * getNet();
 };
 

@@ -10,18 +10,22 @@
 
 #include "Abstract_Layer.h"
 #include <iostream>
+#include<math.h>
 
 class Net {
 public:
   Net();
   ~Net();
-  void feedForward(std::vector<float> &inputs);
-  void backProp(std::vector<float> &targets);
-  void getResults();//results);
+  void feedForward(std::vector<int> * inputs);
+  void backProp(std::vector<int> * targets);
+  std::vector<float> * getResults();
   void addLayer(Abstract_Layer * layer);
+  float getAvgError();
 
 private:
   std::vector<Abstract_Layer *> layers;
+  float avgError;
+  float error;
 };
 
 #endif

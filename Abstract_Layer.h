@@ -17,6 +17,7 @@ public:
   virtual void addNode(Abstract_Node * node) = 0;
   virtual std::vector<Abstract_Node *> getLayer() = 0;
   virtual Abstract_Node * getNodeAt(int index) = 0;
+  virtual int size() = 0;
 
 protected:
   std::vector<Abstract_Node *> nodes;
