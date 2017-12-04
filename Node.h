@@ -21,7 +21,7 @@
 class Node : public Abstract_Node {
 public:
   Node(int hm_outputs, int index);
-  ~Node();
+  virtual ~Node();
   virtual void feedForward(Abstract_Layer * lastLayer);
   virtual void setOutput(float value);
   virtual float getOutput();

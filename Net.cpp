@@ -12,7 +12,9 @@ Net::Net() {
 }
 
 Net::~Net() {
-
+  for (int i=0; i<this->layers.size(); i++) {
+    delete this->layers.at(i);
+  }
 }
 
 void Net::feedForward(std::vector<int> * inputs_i) {

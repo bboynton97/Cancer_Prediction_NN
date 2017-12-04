@@ -12,10 +12,10 @@ Layer::Layer() {
 }
 
 Layer::~Layer() {
-  //TODO: Delete all nodes in the layer
-  //for (int i=0; i<this->nodes.size(); i++) {
-  //  delete this->nodes.at(i);
-  //}
+  // Delete all nodes in the layer
+  for (int i=0; i<this->nodes.size(); i++) {
+   delete this->nodes.at(i);
+  }
 }
 
 void Layer::addNode(Abstract_Node * node) {

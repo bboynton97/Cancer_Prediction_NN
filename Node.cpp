@@ -26,7 +26,10 @@ Node::Node(int hm_connections, int index) { //: outputValue (0.0) {
 }
 
 Node::~Node() {
-
+  //Delete all connections
+  for (int i=0; i<this->outputConnections.size(); i++) {
+   delete this->outputConnections.at(i);
+  }
 }
 
 void Node::feedForward(Abstract_Layer * lastLayer) {

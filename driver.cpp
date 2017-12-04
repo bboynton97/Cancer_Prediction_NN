@@ -17,7 +17,7 @@
 
 int main (int argc, char * argv [])
 {
-  std::cout << "Welcome! Please enter the design of your neural network. Ex: '9,5,2'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 1.\n\nNote: Your design must begin with 9 nodes and end with 2 nodes in order to fit the dataset." << std::endl;
+  std::cout << "Welcome! Please enter the design of your neural network. Ex: '9,5,1'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 1.\n\nNote: Your design must begin with 9 nodes and end with 2 nodes in order to fit the dataset." << std::endl;
 
   std::string input;
   std::cout << "> ";
@@ -56,13 +56,14 @@ int main (int argc, char * argv [])
   std::getline(std::cin, input2);
   int epochs = std::stoi(input2);
 
+  //TODO: Maybe use the iterator pattern here
   //int line = 0;
-  for (int i=0; i<epochs; i++) {
+  for (int e=0; e<epochs; e++) {
+    std::cout << "\n***********\n" << "* Epoch " << e+1 << " *\n" << "***********\n" << std::endl;
     Preprocessor pp;
-    std::cout << "***********\n" << "* Epoch " << i+1 << " *\n" << "***********\n" << std::endl;
     //while(!pp.isFinished()) {
-    //for (int line = 0; i<699; i++) {
-    for (int line = 0; line<700; line++) {
+    for (int line = 0; line<699; line++) {
+    //for (int line = 0; line<700; line++) {
 
       std::vector<int> * data = pp.getNextData();
 
@@ -97,16 +98,69 @@ int main (int argc, char * argv [])
       net->backProp(label);
 
       if (line % 100 == 0 && line >= 100) { //Print stats about every 100 rows trained
-        std::cout << "++ Iteration: " << line << " ++ " << std::endl;
+        std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;
 
-        //std::cout << "*--> Last accuracy: " << 1-net->getError() << std::endl;
+        std::cout << "--> Last accuracy: " << 1-net->getError() << std::endl;
         //std::cout << "*--> Last error: " << net->getError() << std::endl;
 
         //std::cout << "--> Past 100 rows average error: " << net->getAvgError() << std::endl;
-        std::cout << "--> Past 100 rows average accuracy: " << 1-net->getAvgError() << "\n\n" << std::endl;
+        //std::cout << "--> Past 100 rows average accuracy: " << 1-net->getAvgError() << "\n\n" << std::endl;
       }
     }
+
   }
+
+  std::cout << "\n\n--------------------------------" << std::endl;
+  std::cout << "       Training Finished        " << std::endl;
+  std::cout << "--------------------------------" << std::endl;
+
+  std::string inference_s;
+
+  while (inference_s != "QUIT") {
+    std::cout << "\nInput inferencing data" << std::endl;
+    std::cout << "> ";
+    std::getline(std::cin, inference_s);
+
+    if (inference_s == "QUIT") {
+      break;
+    }
+
+    inference_s = inference_s + ",";
+
+    std::vector<std::string> inference_s_v = std::vector<std::string>();
+    while (input.find(',') != std::string::npos) { //While there are spaces in the string
+      std::string sub = inference_s.substr(0, inference_s.find(',')); //Get the first substring
+      inference_s_v.push_back(sub); //Enqueue that sub
+      inference_s.erase(0, inference_s.find(',') + 1); //Erase that sub from the exp string
+    }
+
+    //convert those to ints
+    std::vector<int> * inference = new std::vector<int>();
+    for (int i=0; i<inference_s_v.size(); i++) {
+      inference->push_back(std::stoi(inference_s_v.at(i)));
+    }
+
+    net->feedForward(inference);
+    //delete inference;
+
+    std::vector<float> * results = net->getResults();
+
+    //Print the output the NN got
+    std::cout << "Output : ";
+    for (int i=0; i<results->size(); i++) {
+      if (i != results->size()-1) {
+        std::cout << results->at(i) << ", ";
+      }
+      std::cout << results->at(i) << std::endl;
+    }
+    //delete results;
+    std::cout << std::endl;
+
+    delete results;
+    delete inference;
+  }
+
+  delete net;
 
   return 0;
 }
