@@ -21,6 +21,7 @@ public:
   std::vector<float> * getResults();
   void addLayer(Abstract_Layer * layer);
   float getAvgError();
+  float getError();
 
 private:
   std::vector<Abstract_Layer *> layers;

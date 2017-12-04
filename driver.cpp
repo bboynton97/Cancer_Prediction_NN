@@ -38,8 +38,6 @@ int main (int argc, char * argv [])
     inputs.push_back(std::stoi(inputs_s.at(i)));
   }
 
-  std::cout << "-> Building the net" << std::endl;
-
   //Use a builder to create the net with these instructions
   Abstract_Builder * builder = new Builder();
   for (int i=0; i<inputs.size(); i++) {
@@ -50,11 +48,7 @@ int main (int argc, char * argv [])
     }
   }
 
-  std::cout << "-> Built the net" << std::endl;
-
   Net * net = builder->getNet();
-
-  std::cout << "-> Got net from builder" << std::endl;
 
   std::cout << "How many epochs would you like to train?" << std::endl;
   std::string input2;
@@ -62,15 +56,13 @@ int main (int argc, char * argv [])
   std::getline(std::cin, input2);
   int epochs = std::stoi(input2);
 
-  Preprocessor pp;
-
-  std::cout << "-> Bouta train" << std::endl;
-
-  int line = 0;
+  //int line = 0;
   for (int i=0; i<epochs; i++) {
+    Preprocessor pp;
+    std::cout << "***********\n" << "* Epoch " << i+1 << " *\n" << "***********\n" << std::endl;
     //while(!pp.isFinished()) {
-    while(line < 699) { //TODO fer lerp it
-      std::cout << "Line: " << line++ << std::endl;
+    //for (int line = 0; i<699; i++) {
+    for (int line = 0; line<700; line++) {
 
       std::vector<int> * data = pp.getNextData();
 
@@ -79,11 +71,12 @@ int main (int argc, char * argv [])
         features->push_back(data->at(i));
       }
 
-      std::cout << "Inputs : ";
-      for (int i=0; i<features->size(); i++) {
-        std::cout << features->at(i) << ", ";
-      }
-      std::cout << std::endl;
+      //Print the dataset inputs
+      //std::cout << "Inputs : ";
+      //for (int i=0; i<features->size(); i++) {
+      //  std::cout << features->at(i) << ", ";
+      //}
+      //std::cout << std::endl;
 
       std::vector<int> * label = new std::vector<int>();
       label->push_back(data->at(data->size()-1));
@@ -94,15 +87,24 @@ int main (int argc, char * argv [])
 
       std::vector<float> * results = net->getResults();
 
-      std::cout << "Output : ";
-      for (int i=0; i<results->size(); i++) {
-        std::cout << results->at(i) << ", ";
-      }
-      std::cout << std::endl;
+      //Print the output the NN got
+      // std::cout << "Output : ";
+      // for (int i=0; i<results->size(); i++) {
+      //   std::cout << results->at(i) << ", ";
+      // }
+      // std::cout << std::endl;
 
       net->backProp(label);
 
-      std::cout << "Net recent average error: " << net->getAvgError() << std::endl;
+      if (line % 100 == 0 && line >= 100) { //Print stats about every 100 rows trained
+        std::cout << "++ Iteration: " << line << " ++ " << std::endl;
+
+        //std::cout << "*--> Last accuracy: " << 1-net->getError() << std::endl;
+        //std::cout << "*--> Last error: " << net->getError() << std::endl;
+
+        //std::cout << "--> Past 100 rows average error: " << net->getAvgError() << std::endl;
+        std::cout << "--> Past 100 rows average accuracy: " << 1-net->getAvgError() << "\n\n" << std::endl;
+      }
     }
   }
 

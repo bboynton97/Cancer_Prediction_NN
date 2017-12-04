@@ -25,6 +25,7 @@ void Net::feedForward(std::vector<int> * inputs_i) {
   delete inputs_i;
 
   //Give the input neurons initial input values
+
   for (int i=0; i<inputs.size(); i++) {
     this->layers[0]->getNodeAt(i)->setOutput(inputs[i]);
   }
@@ -32,16 +33,16 @@ void Net::feedForward(std::vector<int> * inputs_i) {
   //Propegate data through each layer then each node
   //TODO: Add Iterator pattern or Visitor pattern here.
 
-  for (int layerCount=1; layerCount<this->layers.size(); layerCount++) {
-    for (int nodeCount=0; nodeCount<this->layers[layerCount]->size() - 1; layerCount++) {
-      this->layers[layerCount]->getNodeAt(nodeCount)->feedForward(this->layers[layerCount-1]);
+  for (int layerCount=1; layerCount<this->layers.size(); layerCount++) { // for every layer in net
+    for (int nodeCount=0; nodeCount<this->layers[layerCount]->size() - 1; nodeCount++) { //for every node in layer
+      this->layers[layerCount]->getNodeAt(nodeCount)->feedForward(this->layers[layerCount-1]); //Feed forward at node
     }
   }
 }
 
 void Net::backProp(std::vector<int> * targets_i) { //TODO: See if we can implement iterator or visitor pattern here
 
-  std::vector<float> targets;
+  std::vector<float> targets = std::vector<float>();
   for (int i=0; i<targets_i->size(); i++) {
     targets.push_back((int)targets_i->at(i));
   }
@@ -54,7 +55,8 @@ void Net::backProp(std::vector<int> * targets_i) { //TODO: See if we can impleme
   Abstract_Layer * lastLayer = this->layers.back();
   this->error = 0.0;
 
-  for (int i=0; i<lastLayer->size(); i++) { //Loop through all nodes in the last layer
+  //for (int i=0; i<lastLayer->size(); i++) { //Loop through all nodes in the last layer
+  for (int i=0; i<targets.size(); i++) {
     float delta = targets.at(i) - lastLayer->getNodeAt(i)->getOutput(); //Get how far we were off for this node
     this->error += (delta * delta); //Add the square of that to error
   }
@@ -87,7 +89,7 @@ void Net::backProp(std::vector<int> * targets_i) { //TODO: See if we can impleme
 		}
 	}
 
-  this->avgError = (this->avgError * 10 + this->error) / (11); //Get the error over the past 10 rows
+  this->avgError = (this->avgError * 100 + this->error) / (101); //Get the error over the past 10 rows
 }
 
 std::vector<float> * Net::getResults() {
@@ -106,4 +108,8 @@ void Net::addLayer(Abstract_Layer * layer) {
 
 float Net::getAvgError() {
   return this->avgError;
+}
+
+float Net::getError() {
+  return this->error;
 }

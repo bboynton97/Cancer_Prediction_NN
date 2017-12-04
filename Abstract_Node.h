@@ -14,6 +14,8 @@
 #include <cmath>
 #include <string>
 #include <iostream>
+#include <time.h>
+#include <stdlib.h>
 
 class Abstract_Layer;
 

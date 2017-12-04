@@ -7,16 +7,18 @@
 
 #include "Node.h"
 
-Node::Node(int hm_connections, int index) {
+Node::Node(int hm_connections, int index) { //: outputValue (0.0) {
   this->index = index;
   this->hm_outputs = hm_connections;
+
+  //this->outputValue = 0; //Set initial output
 
   for (int i=0; i<hm_connections; i++) {
     Connection * connection = new Connection();
 
     std::srand((unsigned)time(0));
     int random_integer = std::rand() % 100;
-    float random_float = random_integer / 100;
+    float random_float = (float)random_integer / 100;
 
     connection->setWeight(random_float);
     this->outputConnections.push_back(connection);
@@ -35,13 +37,22 @@ void Node::feedForward(Abstract_Layer * lastLayer) {
   // Normally, that would be multiplied by a bias here too, but for the sake of simplicity (and because this is
   // being written from scratch and not with a library), I'm not going to add the bias.
 
+  //std::cout<<"Old output: " << this->getOutput()<<std::endl;
+
   float summation = 0.0;
   for (int i=0; i<lastLayer->size(); i++) {
     float input = lastLayer->getNodeAt(i)->getOutput();
     float weight = lastLayer->getNodeAt(i)->getConnectionAt(this->index)->getWeight();
+    // if (i == 0) {
+    //   std::cout<<"Weight: " << weight <<std::endl;
+    // }
 
     summation += (input * weight);
   }
+
+  //std::cout<<"Calculated new value: " << summation <<std::endl;
+
+  //std::cout<<"Setting output after activation function: "<<this->activationFunction(summation)<<std::endl;
 
   this->outputValue = this->activationFunction(summation);
 }

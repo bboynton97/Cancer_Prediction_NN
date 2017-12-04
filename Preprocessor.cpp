@@ -9,7 +9,7 @@
 
 //Constructor
 Preprocessor::Preprocessor() : dataFile("breast-cancer-honors.csv", std::ios::in) {
-   std::cout << "+----> Preprocessor built" << std::endl;
+  
 }
 
 Preprocessor::~Preprocessor() {
