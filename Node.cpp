@@ -13,12 +13,14 @@ Node::Node(int hm_connections, int index) { //: outputValue (0.0) {
 
   //this->outputValue = 0; //Set initial output
 
+  //std::srand((unsigned)time(0));
   for (int i=0; i<hm_connections; i++) {
     Connection * connection = new Connection();
 
-    std::srand((unsigned)time(0));
     int random_integer = std::rand() % 100;
     float random_float = (float)random_integer / 100;
+
+    std::cout << "Node initialized with " << random_float << std::endl;
 
     connection->setWeight(random_float);
     this->outputConnections.push_back(connection);
@@ -44,11 +46,14 @@ void Node::feedForward(Abstract_Layer * lastLayer) {
 
   float summation = 0.0;
   for (int i=0; i<lastLayer->size(); i++) {
-    float input = lastLayer->getNodeAt(i)->getOutput();
-    float weight = lastLayer->getNodeAt(i)->getConnectionAt(this->index)->getWeight();
-    // if (i == 0) {
-    //   std::cout<<"Weight: " << weight <<std::endl;
-    // }
+    float input = lastLayer->getNodeAt(i)->getOutput(); //This node's current bias
+    float weight = lastLayer->getNodeAt(i)->getConnectionAt(this->index)->getWeight(); //Get the weight from that node to this node
+
+     // if (i == 0) {
+     //  std::cout<<"- Node index: " << lastLayer->getNodeAt(i)->getIndex() <<std::endl;
+     //   std::cout<<"Input : " << input <<std::endl;
+     //   std::cout<<"Weight: " << weight <<std::endl;
+     // }
 
     summation += (input * weight);
   }
@@ -81,6 +86,7 @@ float Node::activationFunction(float val) {
 
   // Softmax, while definitely the most popular activation function today, would require a bit more math.
   // Something like: result[node] = e^node_val / summation(e^node_vals)
+  // Which would require a decent bit of restructuring
 
   //TODO: Add softmax if time permits
 }
@@ -113,11 +119,10 @@ float Node::getGradient() {
 void Node::updateInputWeights(Abstract_Layer * previousLayer) {
   // Adjust the weights in the connections between this layer and the one before it
 
-  float _LEARNING_RATE_ = 0.01;
+  float _LEARNING_RATE_ = 0.15;
   float _ALPHA_ = 0.5;
 
-  for (int i = 0; i < previousLayer->size(); i++)
-	{
+  for (int i = 0; i < previousLayer->size(); i++) {
 		Abstract_Node * node = previousLayer->getNodeAt(i);
 		float oldDeltaWeight = node->getConnectionAt(this->index)->getDeltaWeight();
 
@@ -130,4 +135,8 @@ void Node::updateInputWeights(Abstract_Layer * previousLayer) {
 		node->getConnectionAt(this->index)->setDeltaWeight(newDeltaWeight);
     node->getConnectionAt(this->index)->setWeight(node->getConnectionAt(this->index)->getWeight() + newDeltaWeight);
 	}
+}
+
+int Node::getIndex() {
+  return this->index;
 }

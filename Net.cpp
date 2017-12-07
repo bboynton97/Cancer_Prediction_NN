@@ -33,10 +33,13 @@ void Net::feedForward(std::vector<int> * inputs_i) {
   }
 
   //Propegate data through each layer then each node
-  //TODO: Add Iterator pattern or Visitor pattern here.
+  //TODO: Add Iterator pattern here.
 
   for (int layerCount=1; layerCount<this->layers.size(); layerCount++) { // for every layer in net
+    //std::cout<<"Should feed forward " << this->layers.size()-1 << " times" << std::endl;
+    //std::cout<<"--FEEDING FORWARD ON LAYER-- " << layerCount << std::endl;
     for (int nodeCount=0; nodeCount<this->layers[layerCount]->size() - 1; nodeCount++) { //for every node in layer
+      //std::cout<<"--FEEDING FORWARD ON NODE--"<<std::endl;
       this->layers[layerCount]->getNodeAt(nodeCount)->feedForward(this->layers[layerCount-1]); //Feed forward at node
     }
   }
@@ -58,7 +61,7 @@ void Net::backProp(std::vector<int> * targets_i) { //TODO: See if we can impleme
   this->error = 0.0;
 
   //for (int i=0; i<lastLayer->size(); i++) { //Loop through all nodes in the last layer
-  for (int i=0; i<targets.size(); i++) {
+  for (int i=0; i<lastLayer->size()-1; i++) {
     float delta = targets.at(i) - lastLayer->getNodeAt(i)->getOutput(); //Get how far we were off for this node
     this->error += (delta * delta); //Add the square of that to error
   }

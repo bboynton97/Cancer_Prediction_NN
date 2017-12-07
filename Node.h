@@ -32,6 +32,7 @@ public:
   virtual void updateInputWeights(Abstract_Layer * previousLayer);
   virtual float activationFunction(float val);
   virtual float activationFunctionDerived(float val);
+  virtual int getIndex();
 };
 
 #endif

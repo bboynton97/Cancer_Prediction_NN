@@ -12,11 +12,10 @@
 #include "Net.h"
 #include "Preprocessor.h"
 
-#define _LEARNING_RATE_ 0.1
-#define _ALPHA_ 0.5
-
 int main (int argc, char * argv [])
 {
+  std::srand((unsigned)time(0));
+
   std::cout << "Welcome! Please enter the design of your neural network. Ex: '9,5,1'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 1.\n\nNote: Your design must begin with 9 nodes and end with 2 nodes in order to fit the dataset." << std::endl;
 
   std::string input;
@@ -95,7 +94,14 @@ int main (int argc, char * argv [])
       // }
       // std::cout << std::endl;
 
+      std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;
+      std::cout << "  > Outputs: " << results->at(0) << std::endl;
+      std::cout << "  > Target: " << label->at(0) << std::endl;
+
       net->backProp(label);
+
+      std::cout << "--> Last accuracy: " << 1-net->getError() << std::endl;
+
 
       if (line % 100 == 0 && line >= 100) { //Print stats about every 100 rows trained
         std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;
@@ -128,7 +134,7 @@ int main (int argc, char * argv [])
     inference_s = inference_s + ",";
 
     std::vector<std::string> inference_s_v = std::vector<std::string>();
-    while (input.find(',') != std::string::npos) { //While there are spaces in the string
+    while (inference_s.find(',') != std::string::npos) { //While there are spaces in the string
       std::string sub = inference_s.substr(0, inference_s.find(',')); //Get the first substring
       inference_s_v.push_back(sub); //Enqueue that sub
       inference_s.erase(0, inference_s.find(',') + 1); //Erase that sub from the exp string
@@ -156,11 +162,11 @@ int main (int argc, char * argv [])
     //delete results;
     std::cout << std::endl;
 
-    delete results;
-    delete inference;
+    //delete results;
+    //delete inference;
   }
 
-  delete net;
+  //delete net;
 
   return 0;
 }
