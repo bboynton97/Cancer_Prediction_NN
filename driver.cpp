@@ -94,26 +94,24 @@ int main (int argc, char * argv [])
       // }
       // std::cout << std::endl;
 
-      std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;
-      std::cout << "  > Outputs: " << results->at(0) << std::endl;
-      std::cout << "  > Target: " << label->at(0) << std::endl;
+      //std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;
 
       net->backProp(label);
 
-      std::cout << "--> Last accuracy: " << 1-net->getError() << std::endl;
-
+      //std::cout << "--> Last accuracy: " << 1-net->getError() << std::endl;
 
       if (line % 100 == 0 && line >= 100) { //Print stats about every 100 rows trained
         std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;
+        //std::cout << "  > Outputs: " << results->at(0) << std::endl;
+        //std::cout << "  > Target: " << label->at(0) << std::endl;
 
-        std::cout << "--> Last accuracy: " << 1-net->getError() << std::endl;
-        //std::cout << "*--> Last error: " << net->getError() << std::endl;
+        //std::cout << "--> Last accuracy: " << 1-net->getError() << std::endl;
+        //std::cout << "*-> Last error: " << net->getError() << std::endl;
 
-        //std::cout << "--> Past 100 rows average error: " << net->getAvgError() << std::endl;
-        //std::cout << "--> Past 100 rows average accuracy: " << 1-net->getAvgError() << "\n\n" << std::endl;
+        std::cout << "--> Past 100 rows average error: " << net->getAvgError() << std::endl;
+        std::cout << "--> Past 100 rows average accuracy: " << 1-net->getAvgError() << "\n\n" << std::endl;
       }
     }
-
   }
 
   std::cout << "\n\n--------------------------------" << std::endl;

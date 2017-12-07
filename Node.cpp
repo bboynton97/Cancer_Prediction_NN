@@ -20,7 +20,7 @@ Node::Node(int hm_connections, int index) { //: outputValue (0.0) {
     int random_integer = std::rand() % 100;
     float random_float = (float)random_integer / 100;
 
-    std::cout << "Node initialized with " << random_float << std::endl;
+    //std::cout << "Node initialized with " << random_float << std::endl;
 
     connection->setWeight(random_float);
     this->outputConnections.push_back(connection);

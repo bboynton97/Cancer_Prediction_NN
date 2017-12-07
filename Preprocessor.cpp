@@ -8,7 +8,8 @@
 #include "Preprocessor.h"
 
 //Constructor
-Preprocessor::Preprocessor() : dataFile("xor.csv", std::ios::in) { //"breast-cancer-honors.csv", std::ios::in) {
+Preprocessor::Preprocessor() : dataFile("xor.csv", std::ios::in) {
+  //: dataFile("breast-cancer-honors.csv", std::ios::in) {
 
 }
 
