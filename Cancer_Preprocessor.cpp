@@ -1,0 +1,17 @@
+//Honor Pledge:
+//
+//I pledge that I have neither given nor
+//received any help on this assignment.
+//
+//brboynto
+
+#include "Cancer_Preprocessor.h"
+
+//Constructor
+Cancer_Preprocessor::Cancer_Preprocessor() { //}: dataFile("breast-cancer-honors.csv", std::ios::in) {
+  this->dataFile = std::ifstream("breast-cancer-honors.csv", std::ios::in);
+}
+
+Cancer_Preprocessor::~Cancer_Preprocessor() {
+
+}

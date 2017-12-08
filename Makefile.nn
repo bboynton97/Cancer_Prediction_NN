@@ -31,8 +31,8 @@ LIBPREFIX     = lib
 LIBSUFFIX     =
 GENFLAGS      = -O
 LDLIBS        = -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS          = Builder$(OBJEXT) Connection$(OBJEXT) driver$(OBJEXT) Layer$(OBJEXT) Net$(OBJEXT) Node$(OBJEXT) Preprocessor$(OBJEXT) Node_Iterator$(OBJEXT) Layer_Iterator$(OBJEXT)
-SRC           = Builder.cpp Connection.cpp driver.cpp Layer.cpp Net.cpp Node.cpp Preprocessor.cpp Node_Iterator.cpp Layer_Iterator.cpp
+OBJS          = Builder$(OBJEXT) Connection$(OBJEXT) driver$(OBJEXT) Layer$(OBJEXT) Net$(OBJEXT) Node$(OBJEXT) Base_Preprocessor$(OBJEXT) Node_Iterator$(OBJEXT) Layer_Iterator$(OBJEXT) XOR_Preprocessor$(OBJEXT) Cancer_Preprocessor$(OBJEXT)
+SRC           = Builder.cpp Connection.cpp driver.cpp Layer.cpp Net.cpp Node.cpp Base_Preprocessor.cpp Node_Iterator.cpp Layer_Iterator.cpp XOR_Preprocessor.cpp Cancer_Preprocessor.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   =
 DEPLIBS       = $(foreach lib, , $(foreach libpath, ., $(wildcard $(libpath)/lib$(lib).a)))
@@ -68,14 +68,20 @@ Net$(OBJEXT): Net.cpp
 Node$(OBJEXT): Node.cpp
 	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Node.cpp
 
-Preprocessor$(OBJEXT): Preprocessor.cpp
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Preprocessor.cpp
+Base_Preprocessor$(OBJEXT): Base_Preprocessor.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Base_Preprocessor.cpp
 
 Node_Iterator$(OBJEXT): Node_Iterator.cpp
 	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Node_Iterator.cpp
 
 Layer_Iterator$(OBJEXT): Layer_Iterator.cpp
 	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Layer_Iterator.cpp
+
+XOR_Preprocessor$(OBJEXT): XOR_Preprocessor.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) XOR_Preprocessor.cpp
+
+Cancer_Preprocessor$(OBJEXT): Cancer_Preprocessor.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Cancer_Preprocessor.cpp
 
 clean:
 	-$(RM) $(OBJS)

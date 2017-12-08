@@ -5,8 +5,8 @@
 //
 //brboynto
 
-#ifndef _PREPROCESSOR_H_
-#define _PREPROCESSOR_H_
+#ifndef _BASE_PREPROCESSOR_H_
+#define _BASE_PREPROCESSOR_H_
 
 #include <vector>
 #include <cstdlib>
@@ -16,17 +16,15 @@
 #include <string>
 #include <iostream>
 
-class Preprocessor {
+class Base_Preprocessor {
 public:
-  Preprocessor();
-  ~Preprocessor();
+  Base_Preprocessor();
+  virtual ~Base_Preprocessor();
   bool isFinished();
   void getData(std::vector<int> &data);
   std::vector<int> * getNextData();
-  //int getNextInputs(std::vector<float> &inputs);
-  //int getTargetOutputs(std::vector<float> &targetOutputs);
 
-private:
+protected:
   std::ifstream dataFile;
 };
 

@@ -1,27 +1,18 @@
-//Honor Pledge:
-//
-//I pledge that I have neither given nor
-//received any help on this assignment.
-//
-//brboynto
+#include "Base_Preprocessor.h"
 
-#include "Preprocessor.h"
-
-//Constructor
-Preprocessor::Preprocessor() : dataFile("xor.csv", std::ios::in) {
-  //: dataFile("breast-cancer-honors.csv", std::ios::in) {
+Base_Preprocessor::Base_Preprocessor() {
 
 }
 
-Preprocessor::~Preprocessor() {
-
+Base_Preprocessor::~Base_Preprocessor() {
+  
 }
 
-bool Preprocessor::isFinished() {
+bool Base_Preprocessor::isFinished() {
   return this->dataFile.eof();
 }
 
-std::vector<int> * Preprocessor::getNextData() {
+std::vector<int> * Base_Preprocessor::getNextData() {
     std::string line;
     std::getline(dataFile, line);
     std::stringstream stream(line);
@@ -43,17 +34,6 @@ std::vector<int> * Preprocessor::getNextData() {
     for (int i=0; i<inputs_s.size(); i++) {
       data->push_back(std::stoi(inputs_s.at(i)));
     }
-
-    // std::vector<int> features;
-    // for (int i=0; i<inputs.size()-1; i++) {
-    //   features.push_back(inputs[i]);
-    // }
-    //
-    // std::vector<int> label = inputs[inputs.size()-1];
-    //
-    // std::vector<std::vector<int>> * data;
-    // data->push_back(features);
-    // data->push_back(label);
 
     return data;
 }

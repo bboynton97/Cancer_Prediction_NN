@@ -10,13 +10,32 @@
 #include "Abstract_Builder.h"
 #include "Builder.h"
 #include "Net.h"
-#include "Preprocessor.h"
+#include "Base_Preprocessor.h"
+#include "XOR_Preprocessor.h"
+#include "Cancer_Preprocessor.h"
 
 int main (int argc, char * argv [])
 {
   std::srand((unsigned)time(0));
 
-  std::cout << "Welcome! Please enter the design of your neural network. Ex: '9,5,1'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 1.\n\nNote: Your design must begin with 9 nodes and end with 2 nodes in order to fit the dataset." << std::endl;
+  std::string dataset_s;
+  std::cout << "\n\n---------------------------------------------\n\nWould you like the XOR dataset (1) or the Breast Cancer dataset (2)?\n> ";
+  std::getline(std::cin, dataset_s);
+
+  Base_Preprocessor * pp;
+
+  int dataset = std::stoi(dataset_s);
+  if (dataset == 1) {
+    pp = new XOR_Preprocessor();
+    std::cout << "Please enter the design of your neural network. Ex: '2,2,1'. Each number corresponds to a layer of nodes. The example has three layers with 2 nodes in the first layer, then 2, then 1.\n\nNote: Your design must begin with 2 nodes and end with 1 node in order to fit the dataset." << std::endl;
+  } else if (dataset == 2) {
+    pp = new Cancer_Preprocessor();
+    std::cout << "Please enter the design of your neural network. Ex: '9,5,1'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 1.\n\nNote: Your design must begin with 9 nodes and end with 1 node in order to fit the dataset." << std::endl;
+  } else {
+    std::cout << "That is not a valid input. Defaulting to XOR." << '\n';
+    pp = new XOR_Preprocessor();
+  }
+
 
   std::string input;
   std::cout << "> ";
@@ -63,12 +82,11 @@ int main (int argc, char * argv [])
   //int line = 0;
   for (int e=0; e<epochs; e++) {
     std::cout << "\n***********\n" << "* Epoch " << e+1 << " *\n" << "***********\n" << std::endl;
-    Preprocessor pp;
     //while(!pp.isFinished()) {
     for (int line = 0; line<699; line++) {
     //for (int line = 0; line<700; line++) {
 
-      std::vector<int> * data = pp.getNextData();
+      std::vector<int> * data = pp->getNextData();
 
       std::vector<int> * features = new std::vector<int>();;
       for (int i=0; i<data->size()-1; i++) {
