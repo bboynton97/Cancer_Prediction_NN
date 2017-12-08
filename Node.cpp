@@ -63,6 +63,7 @@ void Node::feedForward(Abstract_Layer * lastLayer) {
   //std::cout<<"Setting output after activation function: "<<this->activationFunction(summation)<<std::endl;
 
   this->outputValue = this->activationFunction(summation);
+
 }
 
 void Node::setOutput(float value) {

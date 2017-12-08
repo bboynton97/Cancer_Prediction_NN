@@ -37,6 +37,10 @@ int main (int argc, char * argv [])
     inputs.push_back(std::stoi(inputs_s.at(i)));
   }
 
+  if (inputs.back() != 1) {
+    throw std::out_of_range("Last layer must have a size of 1 node");
+  }
+
   //Use a builder to create the net with these instructions
   Abstract_Builder * builder = new Builder();
   for (int i=0; i<inputs.size(); i++) {

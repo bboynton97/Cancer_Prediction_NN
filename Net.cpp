@@ -35,14 +35,25 @@ void Net::feedForward(std::vector<int> * inputs_i) {
   //Propegate data through each layer then each node
   //TODO: Add Iterator pattern here.
 
-  for (int layerCount=1; layerCount<this->layers.size(); layerCount++) { // for every layer in net
-    //std::cout<<"Should feed forward " << this->layers.size()-1 << " times" << std::endl;
-    //std::cout<<"--FEEDING FORWARD ON LAYER-- " << layerCount << std::endl;
-    for (int nodeCount=0; nodeCount<this->layers[layerCount]->size() - 1; nodeCount++) { //for every node in layer
-      //std::cout<<"--FEEDING FORWARD ON NODE--"<<std::endl;
-      this->layers[layerCount]->getNodeAt(nodeCount)->feedForward(this->layers[layerCount-1]); //Feed forward at node
+  Base_Layer_Iterator * layerIterator = new Layer_Iterator(*this);
+
+  for (layerIterator->begin(); !layerIterator->isEnd(); layerIterator->next()) {
+
+    Base_Node_Iterator * nodeIterator = new Node_Iterator(*layerIterator->getLayer());
+
+    for (nodeIterator->begin(); !nodeIterator->isEnd(); nodeIterator->next()) {
+      nodeIterator->getNode()->feedForward(layerIterator->getLastLayer());
     }
   }
+
+  // for (int layerCount=1; layerCount<this->layers.size(); layerCount++) { // for every layer in net
+  //   //std::cout<<"Should feed forward " << this->layers.size()-1 << " times" << std::endl;
+  //   //std::cout<<"--FEEDING FORWARD ON LAYER-- " << layerCount << std::endl;
+  //   for (int nodeCount=0; nodeCount<this->layers[layerCount]->size() - 1; nodeCount++) { //for every node in layer
+  //     //std::cout<<"--FEEDING FORWARD ON NODE--"<<std::endl;
+  //     this->layers[layerCount]->getNodeAt(nodeCount)->feedForward(this->layers[layerCount-1]); //Feed forward at node
+  //   }
+  // }
 }
 
 void Net::backProp(std::vector<int> * targets_i) { //TODO: See if we can implement iterator or visitor pattern here
@@ -117,4 +128,12 @@ float Net::getAvgError() {
 
 float Net::getError() {
   return this->error;
+}
+
+Abstract_Layer * Net::getLayerAt(int index) {
+  return this->layers.at(index);
+}
+
+int Net::size() {
+  return this->layers.size();
 }
