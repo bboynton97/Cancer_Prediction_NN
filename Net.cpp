@@ -38,9 +38,7 @@ void Net::feedForward(std::vector<int> * inputs_i) {
   Base_Layer_Iterator * layerIterator = new Layer_Iterator(*this);
 
   for (layerIterator->begin(); !layerIterator->isEnd(); layerIterator->next()) {
-
     Base_Node_Iterator * nodeIterator = new Node_Iterator(*layerIterator->getLayer());
-
     for (nodeIterator->begin(); !nodeIterator->isEnd(); nodeIterator->next()) {
       nodeIterator->getNode()->feedForward(layerIterator->getLastLayer());
     }
