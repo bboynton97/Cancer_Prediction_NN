@@ -11,16 +11,11 @@ Node::Node(int hm_connections, int index) { //: outputValue (0.0) {
   this->index = index;
   this->hm_outputs = hm_connections;
 
-  //this->outputValue = 0; //Set initial output
-
-  //std::srand((unsigned)time(0));
   for (int i=0; i<hm_connections; i++) {
     Connection * connection = new Connection();
 
     int random_integer = std::rand() % 100;
     float random_float = (float)random_integer / 100;
-
-    //std::cout << "Node initialized with " << random_float << std::endl;
 
     connection->setWeight(random_float);
     this->outputConnections.push_back(connection);
@@ -41,26 +36,14 @@ void Node::feedForward(Abstract_Layer * lastLayer) {
   // Normally, that would be multiplied by a bias here too, but for the sake of simplicity (and because this is
   // being written from scratch and not with a library), I'm not going to add the bias.
 
-  //std::cout<<"Old output: " << this->getOutput()<<std::endl;
-
   float summation = 0.0;
   for (int i=0; i<lastLayer->size(); i++) {
     float input = lastLayer->getNodeAt(i)->getOutput(); //This node's current bias
     float weight = lastLayer->getNodeAt(i)->getConnectionAt(this->index)->getWeight(); //Get the weight from that node to this node
-
-     // if (i == 0) {
-     //  std::cout<<"- Node index: " << lastLayer->getNodeAt(i)->getIndex() <<std::endl;
-     //   std::cout<<"Input : " << input <<std::endl;
-     //   std::cout<<"Weight: " << weight <<std::endl;
-     // }
-
     summation += (input * weight);
   }
 
-  //std::cout<<"Calculated new value: " << summation <<std::endl;
-
-  //std::cout<<"Setting output after activation function: "<<this->activationFunction(summation)<<std::endl;
-
+  // We've calculated the output value of the node, now we need to normalize it by sending it to an activation function
   this->outputValue = this->activationFunction(summation);
 
 }
@@ -87,8 +70,6 @@ float Node::activationFunction(float val) {
   // Softmax, while definitely the most popular activation function today, would require a bit more math.
   // Something like: result[node] = e^node_val / summation(e^node_vals)
   // Which would require a decent bit of restructuring
-
-  //TODO: Add softmax if time permits
 }
 
 float Node::activationFunctionDerived(float val) {
@@ -102,14 +83,13 @@ void Node::calculateOutputGradients(float targetVal) {
 }
 
 void Node::calculateHiddenGradients(Abstract_Layer * nextLayer) {
-  float summation = 0.0;
+  float summation = 0.0; //Getting a summation value again
 
-	for (int i = 0; i < nextLayer->size() - 1; i++)
-	{
+	for (int i = 0; i < nextLayer->size() - 1; i++) {
 		summation += this->outputConnections[i]->getWeight() * nextLayer->getNodeAt(i)->getGradient();
 	}
 
-  this->gradient = summation * this->activationFunctionDerived(this->outputValue);
+  this->gradient = summation * this->activationFunctionDerived(this->outputValue); //New gradient is E(weight * old gradient) * derived-activation(weight)
 }
 
 float Node::getGradient() {
@@ -119,7 +99,7 @@ float Node::getGradient() {
 void Node::updateInputWeights(Abstract_Layer * previousLayer) {
   // Adjust the weights in the connections between this layer and the one before it
 
-  float _LEARNING_RATE_ = 0.15;
+  float _LEARNING_RATE_ = 0.15; //These are configurable variables for me to make the model fit better
   float _ALPHA_ = 0.5;
 
   for (int i = 0; i < previousLayer->size(); i++) {

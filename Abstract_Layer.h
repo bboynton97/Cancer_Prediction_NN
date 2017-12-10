@@ -11,6 +11,8 @@
 #include "Abstract_Node.h"
 #include <vector>
 
+//This is basically just a storage and organization object for nodes. It helps it fit the composite pattern better.
+
 class Abstract_Layer {
 public:
   virtual ~Abstract_Layer() {};

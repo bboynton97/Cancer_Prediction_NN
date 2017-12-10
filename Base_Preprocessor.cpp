@@ -15,10 +15,6 @@ void Base_Preprocessor::restart() {
 }
 
 bool Base_Preprocessor::isFinished() {
-  //return this->dataFile.eof();
-  //return !this->dataFile.good();
-  //return this->dataFile.bad();
-  //return this->dataFile.eof() && !this->dataFile.good() && this->dataFile.bad();
   return this->isEnd;
 }
 
@@ -39,7 +35,7 @@ std::vector<int> Base_Preprocessor::getNextData(bool & isEnd) {
       input.erase(0, input.find(',') + 1); //Erase that sub from the exp string
     }
 
-    try {
+    try { //If it's the end of the feed, it won't be stoi convertable
       int num = std::stoi(inputs_s.at(0));
     } catch (std::invalid_argument) {
       isEnd = true;

@@ -12,14 +12,14 @@ Net::Net() {
 }
 
 Net::~Net() {
-  for (int i=0; i<this->layers.size(); i++) {
+  for (int i=0; i<this->layers.size(); i++) { //Delete all layers that belong to the net
     delete this->layers.at(i);
   }
 }
 
-void Net::feedForward(std::vector<int> inputs_i) {
+void Net::feedForward(std::vector<int> inputs_i) { //This is what turns the inputs into a prediction
 
-  std::vector<float> inputs;
+  std::vector<float> inputs; //Convert everything to a float
   for (int i=0; i<inputs_i.size(); i++) {
     inputs.push_back((int)inputs_i.at(i));
   }
@@ -29,7 +29,7 @@ void Net::feedForward(std::vector<int> inputs_i) {
     this->layers[0]->getNodeAt(i)->setOutput(inputs[i]);
   }
 
-  //Propegate data through each layer then each node
+  //Propegate data through each layer then each node using iterators
   Base_Layer_Iterator * layerIterator = new Layer_Iterator(*this);
 
   for (layerIterator->begin(); !layerIterator->isEnd(); layerIterator->next()) {
@@ -41,18 +41,9 @@ void Net::feedForward(std::vector<int> inputs_i) {
   }
 
   delete layerIterator;
-
-  // for (int layerCount=1; layerCount<this->layers.size(); layerCount++) { // for every layer in net
-  //   //std::cout<<"Should feed forward " << this->layers.size()-1 << " times" << std::endl;
-  //   //std::cout<<"--FEEDING FORWARD ON LAYER-- " << layerCount << std::endl;
-  //   for (int nodeCount=0; nodeCount<this->layers[layerCount]->size() - 1; nodeCount++) { //for every node in layer
-  //     //std::cout<<"--FEEDING FORWARD ON NODE--"<<std::endl;
-  //     this->layers[layerCount]->getNodeAt(nodeCount)->feedForward(this->layers[layerCount-1]); //Feed forward at node
-  //   }
-  // }
 }
 
-void Net::backProp(std::vector<int> targets_i) { //TODO: See if we can implement iterator or visitor pattern here
+void Net::backProp(std::vector<int> targets_i) { //This is what adjusts values in the NN to better fit it to the data
 
   std::vector<float> targets = std::vector<float>();
   for (int i=0; i<targets_i.size(); i++) {
@@ -66,7 +57,7 @@ void Net::backProp(std::vector<int> targets_i) { //TODO: See if we can implement
   Abstract_Layer * lastLayer = this->layers.back();
   this->error = 0.0;
 
-  //for (int i=0; i<lastLayer->size(); i++) { //Loop through all nodes in the last layer
+  //Loop through all nodes in the last layer
   for (int i=0; i<lastLayer->size()-1; i++) {
     float delta = targets.at(i) - lastLayer->getNodeAt(i)->getOutput(); //Get how far we were off for this node
     this->error += (delta * delta); //Add the square of that to error
