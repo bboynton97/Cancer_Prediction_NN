@@ -91,6 +91,8 @@ Finally, there are some exploding/vanishing gradient issues on both datasets. Th
 
 ## Challenges
 
-Throughout the development process, there were certainly a number of problems that stumped me. Fortunately, with enough thinking, problem solving and the occasional Stack Overflow, the primary goal has been satisfied. 
+Throughout the development process, there were certainly a number of problems that stumped me. Fortunately, with enough thinking, problem solving and the occasional Stack Overflow, the primary goal has been satisfied.
 
 ## Results
+
+The final neural network has proven to perform relatively effectively. It is by no means groundbreaking, but for a neural network written from scratch, focusing on design patterns over accuracy, it performs well. Not only did I learn a decent bit on how to program a neural network, but I also gained knowledge on how to implement design patterns in a real-world, practical application.
