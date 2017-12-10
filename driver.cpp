@@ -79,48 +79,52 @@ int main (int argc, char * argv [])
   int epochs = std::stoi(input2);
 
   //TODO: Maybe use the iterator pattern here
-  //int line = 0;
   for (int e=0; e<epochs; e++) {
     std::cout << "\n***********\n" << "* Epoch " << e+1 << " *\n" << "***********\n" << std::endl;
-    //while(!pp.isFinished()) {
-    for (int line = 0; line<699; line++) {
-    //for (int line = 0; line<700; line++) {
+    pp->restart();
+    int line = 0;
 
-      std::vector<int> * data = pp->getNextData();
+    while(!pp->isFinished()) {
+      line++;
+      bool isEnd = false;
+      std::vector<int> * data = pp->getNextData(isEnd);
 
-      std::vector<int> * features = new std::vector<int>();;
-      for (int i=0; i<data->size()-1; i++) {
-        features->push_back(data->at(i));
+      if (!isEnd) {
+        std::vector<int> * features = new std::vector<int>();;
+        for (int i=0; i<data->size()-1; i++) {
+          features->push_back(data->at(i));
+        }
+
+        //Print the dataset inputs
+        //std::cout << "Inputs : ";
+        //for (int i=0; i<features->size(); i++) {
+        //  std::cout << features->at(i) << ", ";
+        //}
+        //std::cout << std::endl;
+
+        std::vector<int> * label = new std::vector<int>();
+        label->push_back(data->at(data->size()-1));
+
+        delete data;
+
+        net->feedForward(features);
+
+        std::vector<float> * results = net->getResults();
+
+        //Print the output the NN got
+        // std::cout << "Output : ";
+        // for (int i=0; i<results->size(); i++) {
+        //   std::cout << results->at(i) << ", ";
+        // }
+        // std::cout << std::endl;
+
+        //std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;
+
+        net->backProp(label);
+
+        //std::cout << "--> Last accuracy: " << 1-net->getError() << std::endl;
+
       }
-
-      //Print the dataset inputs
-      //std::cout << "Inputs : ";
-      //for (int i=0; i<features->size(); i++) {
-      //  std::cout << features->at(i) << ", ";
-      //}
-      //std::cout << std::endl;
-
-      std::vector<int> * label = new std::vector<int>();
-      label->push_back(data->at(data->size()-1));
-
-      delete data;
-
-      net->feedForward(features);
-
-      std::vector<float> * results = net->getResults();
-
-      //Print the output the NN got
-      // std::cout << "Output : ";
-      // for (int i=0; i<results->size(); i++) {
-      //   std::cout << results->at(i) << ", ";
-      // }
-      // std::cout << std::endl;
-
-      //std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;
-
-      net->backProp(label);
-
-      //std::cout << "--> Last accuracy: " << 1-net->getError() << std::endl;
 
       if (line % 100 == 0 && line >= 100) { //Print stats about every 100 rows trained
         std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;

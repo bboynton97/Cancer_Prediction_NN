@@ -22,10 +22,12 @@ public:
   virtual ~Base_Preprocessor();
   bool isFinished();
   void getData(std::vector<int> &data);
-  std::vector<int> * getNextData();
+  void restart();
+  std::vector<int> * getNextData(bool & isEnd);
 
 protected:
   std::ifstream dataFile;
+  bool isEnd;
 };
 
 #endif
