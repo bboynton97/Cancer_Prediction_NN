@@ -23,7 +23,7 @@ public:
   bool isFinished();
   void getData(std::vector<int> &data);
   void restart();
-  std::vector<int> * getNextData(bool & isEnd);
+  std::vector<int> getNextData(bool & isEnd);
 
 protected:
   std::ifstream dataFile;

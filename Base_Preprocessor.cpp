@@ -22,7 +22,7 @@ bool Base_Preprocessor::isFinished() {
   return this->isEnd;
 }
 
-std::vector<int> * Base_Preprocessor::getNextData(bool & isEnd) {
+std::vector<int> Base_Preprocessor::getNextData(bool & isEnd) {
     std::string line;
     std::getline(dataFile, line);
     std::stringstream stream(line);
@@ -46,11 +46,11 @@ std::vector<int> * Base_Preprocessor::getNextData(bool & isEnd) {
       this->isEnd = true;
     }
 
-    std::vector<int> * data = new std::vector<int>();
+    std::vector<int> data;
     if (!isEnd) {
       //convert those to ints
       for (int i=0; i<inputs_s.size(); i++) {
-        data->push_back(std::stoi(inputs_s.at(i)));
+        data.push_back(std::stoi(inputs_s.at(i)));
       }
     }
 

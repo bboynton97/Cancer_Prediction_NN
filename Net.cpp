@@ -17,24 +17,19 @@ Net::~Net() {
   }
 }
 
-void Net::feedForward(std::vector<int> * inputs_i) {
+void Net::feedForward(std::vector<int> inputs_i) {
 
-  std::vector<float> inputs;// = std::vector<float> ();
-  for (int i=0; i<inputs_i->size(); i++) {
-    inputs.push_back((int)inputs_i->at(i));
+  std::vector<float> inputs;
+  for (int i=0; i<inputs_i.size(); i++) {
+    inputs.push_back((int)inputs_i.at(i));
   }
 
-  delete inputs_i;
-
   //Give the input neurons initial input values
-
   for (int i=0; i<inputs.size(); i++) {
     this->layers[0]->getNodeAt(i)->setOutput(inputs[i]);
   }
 
   //Propegate data through each layer then each node
-  //TODO: Add Iterator pattern here.
-
   Base_Layer_Iterator * layerIterator = new Layer_Iterator(*this);
 
   for (layerIterator->begin(); !layerIterator->isEnd(); layerIterator->next()) {
@@ -42,7 +37,10 @@ void Net::feedForward(std::vector<int> * inputs_i) {
     for (nodeIterator->begin(); !nodeIterator->isEnd(); nodeIterator->next()) {
       nodeIterator->getNode()->feedForward(layerIterator->getLastLayer());
     }
+    delete nodeIterator;
   }
+
+  delete layerIterator;
 
   // for (int layerCount=1; layerCount<this->layers.size(); layerCount++) { // for every layer in net
   //   //std::cout<<"Should feed forward " << this->layers.size()-1 << " times" << std::endl;
@@ -54,13 +52,12 @@ void Net::feedForward(std::vector<int> * inputs_i) {
   // }
 }
 
-void Net::backProp(std::vector<int> * targets_i) { //TODO: See if we can implement iterator or visitor pattern here
+void Net::backProp(std::vector<int> targets_i) { //TODO: See if we can implement iterator or visitor pattern here
 
   std::vector<float> targets = std::vector<float>();
-  for (int i=0; i<targets_i->size(); i++) {
-    targets.push_back((int)targets_i->at(i));
+  for (int i=0; i<targets_i.size(); i++) {
+    targets.push_back((int)targets_i.at(i));
   }
-  delete targets_i;
 
   // Loss function
   // We need to see how far we are off from the intended value and adjust the net to fit that
@@ -106,11 +103,10 @@ void Net::backProp(std::vector<int> * targets_i) { //TODO: See if we can impleme
   this->avgError = (this->avgError * 100 + this->error) / (101); //Get the error over the past 10 rows
 }
 
-std::vector<float> * Net::getResults() {
-  std::vector<float> * results = new std::vector<float>();
-
+std::vector<float> Net::getResults() {
+  std::vector<float> results;
 	for (int i = 0; i < this->layers.back()->size() - 1; i++) {
-		results->push_back(this->layers.back()->getNodeAt(i)->getOutput());
+		results.push_back(this->layers.back()->getNodeAt(i)->getOutput());
 	}
 
   return results;

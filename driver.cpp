@@ -13,10 +13,11 @@
 #include "Base_Preprocessor.h"
 #include "XOR_Preprocessor.h"
 #include "Cancer_Preprocessor.h"
+#include <memory>
 
 int main (int argc, char * argv [])
 {
-  std::srand((unsigned)time(0));
+  std::srand((unsigned)time(0)); //Set random seed value right away so it's out of the way
 
   std::string dataset_s;
   std::cout << "\n\n---------------------------------------------\n\nWould you like the XOR dataset (1) or the Breast Cancer dataset (2)?\n> ";
@@ -25,11 +26,11 @@ int main (int argc, char * argv [])
   Base_Preprocessor * pp;
 
   int dataset = std::stoi(dataset_s);
-  if (dataset == 1) {
-    pp = new XOR_Preprocessor();
+  if (dataset == 1) { //In this project, each dataset has it's own preprocessor to get the data
+    pp = new XOR_Preprocessor(); //Assign XOR_Preprocessor pointer to Base_Preprocessor
     std::cout << "Please enter the design of your neural network. Ex: '2,2,1'. Each number corresponds to a layer of nodes. The example has three layers with 2 nodes in the first layer, then 2, then 1.\n\nNote: Your design must begin with 2 nodes and end with 1 node in order to fit the dataset." << std::endl;
   } else if (dataset == 2) {
-    pp = new Cancer_Preprocessor();
+    pp = new Cancer_Preprocessor(); //Assign Cancer_Preprocessor pointer to Base_Preprocessor
     std::cout << "Please enter the design of your neural network. Ex: '9,5,1'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 1.\n\nNote: Your design must begin with 9 nodes and end with 1 node in order to fit the dataset." << std::endl;
   } else {
     std::cout << "That is not a valid input. Defaulting to XOR." << '\n';
@@ -37,7 +38,7 @@ int main (int argc, char * argv [])
   }
 
 
-  std::string input;
+  std::string input;  //Get the model data for the shape of the NN
   std::cout << "> ";
   std::getline(std::cin, input);
   input = input + ",";
@@ -56,21 +57,21 @@ int main (int argc, char * argv [])
     inputs.push_back(std::stoi(inputs_s.at(i)));
   }
 
-  if (inputs.back() != 1) {
+  if (inputs.back() != 1) { //In case the user doesn't listen to the instructions
     throw std::out_of_range("Last layer must have a size of 1 node");
   }
 
   //Use a builder to create the net with these instructions
-  Abstract_Builder * builder = new Builder();
+  std::shared_ptr<Abstract_Builder> builder (new Builder());
   for (int i=0; i<inputs.size(); i++) {
     if (i != inputs.size()-1) {
       builder->createLayer(inputs.at(i), inputs.at(i+1)); //Create a layer with that number of nodes and connections to the next layer
-    } else {
+    } else { //For last layer
       builder->createLayer(inputs.at(i), 0); //Create a layer with that number of nodes and no connections to next layer
     }
   }
 
-  Net * net = builder->getNet();
+  std::shared_ptr<Net> net (builder->getNet()); //Get net from builder
 
   std::cout << "How many epochs would you like to train?" << std::endl;
   std::string input2;
@@ -78,72 +79,46 @@ int main (int argc, char * argv [])
   std::getline(std::cin, input2);
   int epochs = std::stoi(input2);
 
-  //TODO: Maybe use the iterator pattern here
+  // For the number of epochs (full runthrough of the dataset)
   for (int e=0; e<epochs; e++) {
     std::cout << "\n***********\n" << "* Epoch " << e+1 << " *\n" << "***********\n" << std::endl;
-    pp->restart();
+    pp->restart(); // Restart the preprocessor (almost works as iterator)
     int line = 0;
 
-    while(!pp->isFinished()) {
+    while(!pp->isFinished()) { //While the file hasn't ended
       line++;
-      bool isEnd = false;
-      std::vector<int> * data = pp->getNextData(isEnd);
+      bool isEnd = false; // Apparently eof isn't a great way to check for end of file, so doing it here too
+      std::vector<int> data = pp->getNextData(isEnd); //Get each row of data
 
-      if (!isEnd) {
-        std::vector<int> * features = new std::vector<int>();;
-        for (int i=0; i<data->size()-1; i++) {
-          features->push_back(data->at(i));
+      if (!isEnd) { //If it's not the last datapoint
+        std::vector<int> features; // Get the features (inputs)
+        for (int i=0; i<data.size()-1; i++) {
+          features.push_back(data.at(i));
         }
 
-        //Print the dataset inputs
-        //std::cout << "Inputs : ";
-        //for (int i=0; i<features->size(); i++) {
-        //  std::cout << features->at(i) << ", ";
-        //}
-        //std::cout << std::endl;
+        std::vector<int> label = std::vector<int>();
+        label.push_back(data.at(data.size()-1)); // Get the label (correct answer from inputs)
 
-        std::vector<int> * label = new std::vector<int>();
-        label->push_back(data->at(data->size()-1));
-
-        delete data;
-
-        net->feedForward(features);
-
-        std::vector<float> * results = net->getResults();
-
-        //Print the output the NN got
-        // std::cout << "Output : ";
-        // for (int i=0; i<results->size(); i++) {
-        //   std::cout << results->at(i) << ", ";
-        // }
-        // std::cout << std::endl;
-
-        //std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;
-
-        net->backProp(label);
-
-        //std::cout << "--> Last accuracy: " << 1-net->getError() << std::endl;
-
+        net->feedForward(features); //Feed the features into the NN
+        //std::vector<float> * results = net->getResults(); //We can get the results if we want to see them here
+        net->backProp(label); //Send in the real value and have backpropegation train the NN to be a better fit
       }
 
       if (line % 100 == 0 && line >= 100) { //Print stats about every 100 rows trained
         std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;
-        //std::cout << "  > Outputs: " << results->at(0) << std::endl;
-        //std::cout << "  > Target: " << label->at(0) << std::endl;
-
-        //std::cout << "--> Last accuracy: " << 1-net->getError() << std::endl;
-        //std::cout << "*-> Last error: " << net->getError() << std::endl;
-
         std::cout << "--> Past 100 rows average error: " << net->getAvgError() << std::endl;
         std::cout << "--> Past 100 rows average accuracy: " << 1-net->getAvgError() << "\n\n" << std::endl;
       }
     }
   }
 
+  delete pp;
+
   std::cout << "\n\n--------------------------------" << std::endl;
   std::cout << "       Training Finished        " << std::endl;
   std::cout << "--------------------------------" << std::endl;
 
+  // Time to inference! There is where you get to send new data in to see what the NN predicts
   std::string inference_s;
 
   while (inference_s != "QUIT") {
@@ -155,8 +130,8 @@ int main (int argc, char * argv [])
       break;
     }
 
+    //Convert the input string into a readable integer vector
     inference_s = inference_s + ",";
-
     std::vector<std::string> inference_s_v = std::vector<std::string>();
     while (inference_s.find(',') != std::string::npos) { //While there are spaces in the string
       std::string sub = inference_s.substr(0, inference_s.find(',')); //Get the first substring
@@ -165,32 +140,25 @@ int main (int argc, char * argv [])
     }
 
     //convert those to ints
-    std::vector<int> * inference = new std::vector<int>();
+    std::vector<int> inference;
     for (int i=0; i<inference_s_v.size(); i++) {
-      inference->push_back(std::stoi(inference_s_v.at(i)));
+      inference.push_back(std::stoi(inference_s_v.at(i)));
     }
 
-    net->feedForward(inference);
-    //delete inference;
+    net->feedForward(inference); //Feed the data forward
 
-    std::vector<float> * results = net->getResults();
+    std::vector<float> results = net->getResults(); //Get the result
 
     //Print the output the NN got
     std::cout << "Output : ";
-    for (int i=0; i<results->size(); i++) {
-      if (i != results->size()-1) {
-        std::cout << results->at(i) << ", ";
+    for (int i=0; i<results.size(); i++) {
+      if (i != results.size()-1) {
+        std::cout << results.at(i) << ", ";
       }
-      std::cout << results->at(i) << std::endl;
+      std::cout << results.at(i) << std::endl;
     }
-    //delete results;
     std::cout << std::endl;
-
-    //delete results;
-    //delete inference;
   }
-
-  //delete net;
 
   return 0;
 }

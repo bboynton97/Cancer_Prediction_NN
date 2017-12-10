@@ -12,7 +12,7 @@ Connection::Connection() {
 }
 
 Connection::~Connection() {
-
+  
 }
 
 float Connection::getWeight() {
