@@ -1,21 +1,21 @@
 # Design Pattern Deep Neural Network
 
 ## Goal
-The goal of this project is to build a system that allows the user to design a neural network to apply to a standard dataset. The neural network will be built using as many applicable design patterns as possible.
+The goal of this project is to build a system that allows the user to design a neural network and apply it to standard datasets. The neural network will be built using as many applicable design patterns as possible.
 
 ## Data
 
 Two datasets are available with the neural network for varied complexity.
 
 ### XOR
-The first is an Exclusive OR (XOR) dataset. The user should construct the neural network with 2 nodes in the first layer and 1 in the last. When inferencing, each node can either be 1 or 0, ideally producing a value close to the intended XOR result.
+The first is an Exclusive OR (XOR) dataset. The user should construct the neural network with 2 nodes in the first layer and 1 in the last. When inferencing, each input can either be 1 or 0, ideally producing a value close to the intended XOR result.
 
 ### Breast Cancer
 
 This is a popular neural network testing dataset. The dataset is a series of numbers, comma separated, corresponding to the columns defined below.
 `clump_thickness,unif_cell_size,unif_cell_shape,marg_adhesion,single_epith_cell_size,bare_nuclei,bland_chrom,norm_nucleoli,mitosis,class`
 
-In this dataset, the `class` value is either 0 or 1. If the patient was diagnosed with breast cancer, a 1 is assigned. Otherwise a 0 is assigned. The goal of this neural network is to correctly predict the patient's class based on the other data related to a tested tumor.
+In this dataset, the `class` value is either 0 or 1. If the patient was diagnosed with a malignant tumor, a 1 is assigned. Otherwise a 0 is assigned. The goal of this neural network is to correctly predict the patient's class based on the other data related to a tested tumor.
 
 The user should construct the neural network with 9 input nodes and 1 output node. Each input value can be between 1 and 10.
 
@@ -24,13 +24,9 @@ This neural network is atypical, in that it is built to work with a number of de
 
 ![](uml.jpg)
 
-# Essay
-
-This project was done for an IUPUI Design Patterns class, and the following is the corresponding essay.
-
 ## Background
 
-Coming into this project, I have had a lot of experience building, fine-tuning and implementing neural networks in my occupation. All of my previous experience, however, involved the use of a preexisting framework or library such as TensorFlow or Theano. I was very familiar with the theory and mathematics behind the frameworks, but had never built a neural network from scratch. I was excited for the challenge.
+Coming into this project, I have had a lot of experience building, fine-tuning and implementing neural networks in my occupation. All of my previous experience, however, involved the use of a preexisting framework or library such as TensorFlow or Theano. I was very familiar with the theory and mathematics behind the neural networks, but had never built a neural network from scratch. I was excited for the challenge.
 
 As an additional challenge, before this class, I had never been exposed to design patterns. Without any out-of-class experience, I was to build a neural network using as many design patterns as possible.
 
@@ -63,7 +59,7 @@ In my client, I ask the user to provide the topography of the neural network by 
 
 **Iterator Pattern**
 
-Throughout the execution of training and inferencing, there are a number of places where looping is essential. Rather than trying to get a variable to loop to, the iterator pattern has proven to work better. The iterator has a constructor function that takes in the layer or node that it is iterating through. It then collects the proper information and iterates through the appropriate variable for that object. This pattern is primarily used in the feed forward process. The preprocessor classes also server to work as an iterator in a sense. They iterate through the file, line by line, until the final line is reached.
+Throughout the execution of training and inferencing, there are a number of places where looping is essential. Rather than trying to get a variable to loop to, the iterator pattern has proven to work better. The iterator has a constructor function that takes in the layer or node that it is iterating through. It then collects the proper information and iterates through the appropriate variable for that object. This pattern is primarily used in the feed forward process. The preprocessor classes also serve to work as an iterator. They iterate through the file, line by line, until the final line is reached.
 
 ## Running the program
 
@@ -81,7 +77,7 @@ When finished inferencing, type `QUIT`.
 
 ## Known problems
 
-Fortunately, by and large the program works well. The known errors consists mostly of NN training bugs. This is largely due to the activation function and loss function used in the backpropegation process.
+Fortunately, by and large, the program works well. The known errors consists mostly of NN training bugs. This is largely due to the activation function and loss function used in the backpropegation process.
 
 For the activation function, a `tanh` function is used. This is a fairly old and outdated activation function. It was chosen because it is the most straightforward activation function and can easily be implemented with all the design patterns being used. Ideally, a larger-scale neural network would use a `RELU` or `leaky RELU` activation function on the hidden layers and a `softmax` function on the final layer. However, this was far outside the scope of the project.
 
@@ -89,7 +85,7 @@ The same principle applies to the loss function, but less so. This NN uses a `Ro
 
 There are existing memory leaks that Valgrind identifies as "possibly lost", "still reachable", and "suppressed". The Valgrind documentation defines these as not true memory leaks and not to worry about them. I'm still worried about them. I have deleted everything I have created on the stack and have not gotten rid of the leaks at the time of this writing.
 
-Finally, there are some exploding/vanishing gradient issues on both datasets. The XOR dataset provides the best accuracies, but because of the randomly initialized beginning connection weights, the gradients can still sometimes "explode" or "vanish". This can be seen when every inference does not return a value (exploding) or when every inference returns either 1 or 0 (vanishing). In this case, simply quit the program and restart to get better results.
+Finally, there are some exploding/vanishing gradient issues on both datasets. The XOR dataset provides the best accuracies, but because of the randomly initialized beginning connection weights, the gradients can still sometimes "explode" or "vanish". This can be seen when every inference does not return a value or the same value every time (exploding) or when every inference returns either 1 or 0 (vanishing). In this case, simply quit the program and restart to get better results.
 
 
 ## Challenges
@@ -107,7 +103,7 @@ Fortunately, [my occupation](http://vemity.com/) has given me a lot of experienc
 **Getting it to run on Tesla (IUPUI CS SSH server)**:
 
 It doesn't. *Why?*
-Tesla has g++ 4.6.2 installed. The current version is 7.2.x. If you look at [a concrete preprocessor class](https://github.com/bboynton97/Design_Pattern_Neural_Network/blob/master/XOR_Preprocessor.cpp), it assigns the file to be read in the constructor. This assignment operator for `std::ifstream` is only supported in g++ 5.0+. Because the `ifstream` object is inherited, it cannot be given the filename in an initialization. Because of this, there is no way to support multiple preprocessors (and thus multiple datasets) while still providing support for g++ <5.0.
+Tesla has g++ 4.6.2 installed. The current version is 7.2.x. If you look at [a concrete preprocessor class](https://github.com/bboynton97/Design_Pattern_Neural_Network/blob/master/XOR_Preprocessor.cpp), it assigns the file to be read in the constructor. This assignment operator for `std::ifstream` is only supported in g++ 5.0+. Because the `ifstream` object is inherited, it cannot be given the filename in an initialization list. Because of this, there is no way to support multiple preprocessors (and thus multiple datasets) while still providing support for g++ <5.0.
 
 ## Results
 
@@ -117,21 +113,21 @@ The final neural network has proven to perform relatively effectively. It is by 
 
 **Why the Flyweight pattern was not used**:
 
-Although it was suggested, it seems that the flyweight pattern would not be ideal for this project. It seems that the flyweight pattern is best for cases when you there are a number of objects that are all largely the same. While there are a lot of layers, nodes and connections, each object has specific values that make it unique. Because of this the flyweight pattern doesn't seem to be a good fit.
+Although it was suggested, it seems that the flyweight pattern would not be ideal for this project. It seems that the flyweight pattern is best for cases when there are a number of objects that are all largely the same. While there are a lot of layers, nodes and connections, each object has specific values that make it unique in every way. Because of this the flyweight pattern doesn't seem to be a good fit.
 
 **Why the Visitor pattern was not used**:
 
-The iterator is used to traverse the network. The network and it's nodes contain the logic for both feed forward and back propagation. To implement the visitor pattern properly, the visitor should be maintaining a state that performs the calculations. Because of the complexity and number of calculations, it is not appropriate to use a visitor for this task.
+The iterator is used to traverse the network. The network and it's nodes contain the logic for both feed forward and back propagation. To implement the visitor pattern properly, the visitor should be maintaining a state that performs the calculations. Because of the complexity and number of calculations, it is not appear to be appropriate to use a visitor for this task.
 
 **Could this program handle other datasets?**:
 
-In short, yes. The preprocessors classes could be expanded greatly. In practical applications, preprocessing can be just as complicated as the actual neural networks. These dataset are well groomed, perfect candidates for neural network training. Other binary classification datasets formatted in csv file style would also work.
+In short, yes. The preprocessor classes could be expanded greatly. In practical applications, preprocessing can be just as complicated as the actual neural networks. These dataset are well groomed, perfect candidates for neural network training. Other binary classification datasets formatted in csv file style would also work with very little changes.
 
 **How do accuracies compare to accepted accuracies for these datasets?**:
 
-With the XOR dataset, it is easy to get >99% accuracy with a 2,2,1 network. This is arguably the easiest dataset possible for a neural network and anything short of 95% is laughable.
+With the XOR dataset, it is easy to get >99% accuracy with a 2,2,1 network. This is arguably the easiest dataset possible for a neural network and anything short of 95% is laughable. This program regularly achieves >99%.
 
-The breast cancer dataset is slightly different. While there are easily identifiable patterns, it does make for an interesting 9-dimensional classification problem. Having use this dataset extensively at my job, it's easy to achieve greater than 90% accuracy regularly when using TensorFlow or other deep learning libraries. With this neural network, I've been steadily getting ~95% accuracies.
+The breast cancer dataset is slightly different. While there are easily identifiable patterns, it does make for an interesting 9-dimensional classification problem. Having used this dataset extensively at my job, it's easy to achieve greater than 90% accuracy regularly when using TensorFlow or other deep learning libraries. With this neural network, I've been steadily getting ~95% accuracy.
 
 **Want to see some of the best worst code you have ever seen?**:
 
