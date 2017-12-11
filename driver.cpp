@@ -21,15 +21,18 @@ int main (int argc, char * argv [])
   std::srand((unsigned)time(0)); //Set random seed value right away so it's out of the way
 
   std::string dataset_s;
-  //std::cout << "\n\n---------------------------------------------\n\nWould you like the XOR dataset (1) or the Breast Cancer dataset (2)?\n> ";
-  Brandon_Print brandon = Brandon_Print();
+  Brandon_Print brandon = Brandon_Print(); //checkout this class... you're in for a treat
   brandon.brandon_printf("\n\n---------------------------------------------\n\nWould you like the XOR dataset (1) or the Breast Cancer dataset (2)?\n> ");
 
   std::getline(std::cin, dataset_s);
 
   Base_Preprocessor * pp;
 
-  int dataset = std::stoi(dataset_s);
+  int dataset = 0;
+  try {
+    dataset = std::stoi(dataset_s);
+  } catch (std::invalid_argument) { } //Gets handled below
+
   if (dataset == 1) { //In this project, each dataset has it's own preprocessor to get the data
     pp = new XOR_Preprocessor(); //Assign XOR_Preprocessor pointer to Base_Preprocessor
     std::cout << "Please enter the design of your neural network. Ex: '2,2,1'. Each number corresponds to a layer of nodes. The example has three layers with 2 nodes in the first layer, then 2, then 1.\n\nNote: Your design must begin with 2 nodes and end with 1 node in order to fit the dataset." << std::endl;
@@ -57,14 +60,20 @@ int main (int argc, char * argv [])
   }
 
   //convert those to ints
+
   std::vector<int> inputs;
-  for (int i=0; i<inputs_s.size(); i++) {
-    int val = std::stoi(inputs_s.at(i));
-    if (val > 10) {
-      std::cout << "In this use-case, a layer of more than 10 nodes is not practical. Setting value to 10." << '\n';
-      val = 10;
+  try {
+    for (int i=0; i<inputs_s.size(); i++) {
+      int val = std::stoi(inputs_s.at(i));
+      if (val > 10) {
+        std::cout << "In this use-case, a layer of more than 10 nodes is not practical. Setting value to 10." << '\n';
+        val = 10;
+      }
+      inputs.push_back(val);
     }
-    inputs.push_back(val);
+  } catch (std::invalid_argument) {
+    std::cout << "Invalid input. Defaulting." << '\n';
+    inputs.push_back(0);
   }
 
   //User input validation
@@ -104,7 +113,13 @@ int main (int argc, char * argv [])
   std::string input2;
   std::cout << "> ";
   std::getline(std::cin, input2);
-  int epochs = std::stoi(input2);
+
+  int epochs = 1;
+  try {
+    epochs = std::stoi(input2);
+  } catch (std::invalid_argument) {
+    std::cout << "Invalid input. Defaulting to 1 epoch." << '\n';
+  }
 
   // For the number of epochs (full runthrough of the dataset)
   for (int e=0; e<epochs; e++) {
@@ -144,6 +159,7 @@ int main (int argc, char * argv [])
   std::cout << "\n\n--------------------------------" << std::endl;
   std::cout << "       Training Finished        " << std::endl;
   std::cout << "--------------------------------" << std::endl;
+  std::cout << "\nEnter QUIT when finished inferencing." << '\n';
 
   // Time to inference! There is where you get to send new data in to see what the NN predicts
   std::string inference_s;
@@ -168,24 +184,29 @@ int main (int argc, char * argv [])
 
     //convert those to ints
     std::vector<int> inference;
-    for (int i=0; i<inference_s_v.size(); i++) {
-      inference.push_back(std::stoi(inference_s_v.at(i)));
-    }
-
-    net->feedForward(inference); //Feed the data forward
-
-    std::vector<float> results = net->getResults(); //Get the result
-
-    //Print the output the NN got
-    std::cout << "Output : ";
-    for (int i=0; i<results.size(); i++) {
-      if (i != results.size()-1) {
-        std::cout << results.at(i) << ", ";
+    try {
+      for (int i=0; i<inference_s_v.size(); i++) {
+        inference.push_back(std::stoi(inference_s_v.at(i)));
       }
-      std::cout << results.at(i) << std::endl;
+    } catch (std::invalid_argument) {
+      std::cout << "Invalid input." << '\n';
     }
-    std::cout << std::endl;
-  }
 
+    if (inference.size() > 0) {
+      net->feedForward(inference); //Feed the data forward
+
+      std::vector<float> results = net->getResults(); //Get the result
+
+      //Print the output the NN got
+      std::cout << "Output : ";
+      for (int i=0; i<results.size(); i++) {
+        if (i != results.size()-1) {
+          std::cout << results.at(i) << ", ";
+        }
+        std::cout << results.at(i) << std::endl;
+      }
+      std::cout << std::endl;
+    }
+  }
   return 0;
 }

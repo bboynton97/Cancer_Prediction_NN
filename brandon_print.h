@@ -26,7 +26,7 @@ public:
   }
   void brandon_printf(std::string brandon) {
     this->brandon2->push_back(brandon);
-    std::printf(brandon2->back().c_str());
+    std::printf("%s",brandon2->back().c_str());
   }
 
 protected:
