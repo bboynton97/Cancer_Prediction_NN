@@ -26,13 +26,13 @@ This neural network is atypical, in that it is built to work with a number of de
 
 # Essay
 
-This project was done for an IUPUI Design Pattern's class, and the following is the corresponding essay.
+This project was done for an IUPUI Design Patterns class, and the following is the corresponding essay.
 
 ## Background
 
-Coming into this project, I have had a lot of experience building, fine-tuning and implementing neural networks. All of my previous experience, however, involved the use of a preexisting framework or library such as TensorFlow or Theano. I was very familiar with the theory and mathematics behind the frameworks, but had never build a neural network from scratch. I was excited for the challenge.
+Coming into this project, I have had a lot of experience building, fine-tuning and implementing neural networks in my occupation. All of my previous experience, however, involved the use of a preexisting framework or library such as TensorFlow or Theano. I was very familiar with the theory and mathematics behind the frameworks, but had never built a neural network from scratch. I was excited for the challenge.
 
-As an additional challenge, before this class, I had never been exposed to design patterns. Without any outside-of-class experience, I was to build a neural network using as many design patterns as possible.
+As an additional challenge, before this class, I had never been exposed to design patterns. Without any out-of-class experience, I was to build a neural network using as many design patterns as possible.
 
 ## Goals
 
@@ -67,11 +67,11 @@ Throughout the execution of training and inferencing, there are a number of plac
 
 ## Running the program
 
-When running the program, you will be prompted to choose your dataset. The program will ask you to choose your dataset (defined above). Because each dataset is different and requires different preprocessing, there is a Base_Preprocessor and then a separate Preprocessor for each dataset.
+When running the program, you will be prompted to choose your dataset (defined above). Because each dataset is different and requires different preprocessing, there is a Base_Preprocessor and then a separate Preprocessor for each dataset.
 
-Once you choose the dataset to use, you'll be asked to design the shape of the neural network. This is done as is explained before. As the program tells you, the number of input nodes should be equal to the number of input nodes should be equal to the number of inputs that the dataset provides. The number of output nodes should always be 1 because the program only constructs binary classifiers.
+Once you choose the dataset to use, you'll be asked to design the shape of the neural network. This is done as explained before. As the program tells you, the number of input nodes should be equal to the number of inputs that the dataset provides. The number of output nodes should always be 1 because the program only constructs binary classifiers.
 
-From there, you choose how many epochs to train for. An epoch is an entire run through the dataset. Too many epochs can lead to overfitting (which is bad and produces inaccurate results). Too many epochs can lead to underfitting (which is bad and produces inaccurate results).
+From there, you choose how many epochs to train for. An epoch is an entire run through the dataset. Too many epochs can lead to overfitting (which is bad and produces inaccurate results). Too little epochs can lead to underfitting (which is bad and produces inaccurate results).
 
 After you hit enter, the model will train. Some insights into last accuracy and the average accuracy will be displayed every 100 rows trained.
 
@@ -83,9 +83,9 @@ When finished inferencing, type `QUIT`.
 
 Fortunately, by and large the program works well. The known errors consists mostly of NN training bugs. This is largely due to the activation function and loss function used in the backpropegation process.
 
-For the activation function, a `tanh` function is used. This is a fairly old and outdated. It was chosen because it is the most straightforward activation function and can easily be implemented with all the design patterns chosen. Ideally, a larger-scale neural network would use a `RELU` or `leaky RELU` activation function on the hidden layers and a `softmax` function on the final layer. However, this was far outside the scope of the project.
+For the activation function, a `tanh` function is used. This is a fairly old and outdated activation function. It was chosen because it is the most straightforward activation function and can easily be implemented with all the design patterns being used. Ideally, a larger-scale neural network would use a `RELU` or `leaky RELU` activation function on the hidden layers and a `softmax` function on the final layer. However, this was far outside the scope of the project.
 
-The same principle applies to the loss function, but less so. This NN uses an `Root Mean Squared` loss function. This is sufficient for the datasets used, but wouldn't be ideal for more complicated datasets.
+The same principle applies to the loss function, but less so. This NN uses a `Root Mean Squared` loss function. This is sufficient for the datasets used, but wouldn't be ideal for more complicated datasets.
 
 Finally, there are some exploding/vanishing gradient issues on both datasets. The XOR dataset provides the best accuracies, but because of the randomly initialized beginning connection weights, the gradients can still sometimes "explode" or "vanish". This can be seen when every inference does not return a value (exploding) or when every inference returns either 1 or 0 (vanishing). In this case, simply quit the program and restart to get better results.
 
