@@ -104,7 +104,7 @@ Fortunately, [my occupation](http://vemity.com/) has given me a lot of experienc
 **Getting it to run on Tesla (IUPUI CS SSH server)**:
 
 It doesn't. *Why?*
-Tesla has g++ 4.6.2 installed. The current version is 7.2.x. If you look at [a concrete preprocessor class](./XOR_Preprocessor), it assigns the file to be read in the constructor. This assignment operator for `std::ifstream` is only supported in g++ 5.0+. Because the `ifstream` object is inherited, it cannot be given the filename in an initialization. Because of this, there is no way to support multiple preprocessors (and thus multiple datasets) while still providing support for g++ <5.0.
+Tesla has g++ 4.6.2 installed. The current version is 7.2.x. If you look at [a concrete preprocessor class](https://github.com/bboynton97/Design_Pattern_Neural_Network/blob/master/XOR_Preprocessor.cpp), it assigns the file to be read in the constructor. This assignment operator for `std::ifstream` is only supported in g++ 5.0+. Because the `ifstream` object is inherited, it cannot be given the filename in an initialization. Because of this, there is no way to support multiple preprocessors (and thus multiple datasets) while still providing support for g++ <5.0.
 
 ## Results
 
@@ -132,4 +132,4 @@ The breast cancer dataset is slightly different. While there are easily identifi
 
 **Want to see some of the best worst code you have ever seen?**:
 
-Check [this](./brandon_print.h) out. (Extra credit for creativity?)
+Check [this](https://github.com/bboynton97/Design_Pattern_Neural_Network/blob/master/brandon_print.h) out. (Extra credit for creativity?)
