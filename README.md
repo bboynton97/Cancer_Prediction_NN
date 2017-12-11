@@ -63,7 +63,7 @@ In my client, I ask the user to provide the topography of the neural network by 
 
 **Iterator Pattern**
 
-Throughout the execution of training and inferencing, there are a number of places where looping is essential. Rather than trying to get a variable to loop to, the iterator pattern has proven to work better. The iterator has a constructor function that takes in the layer or node that it is iterating through. It then collects the proper information and iterates through the appropriate variable for that object. This pattern is primarily used in the feed forward process.
+Throughout the execution of training and inferencing, there are a number of places where looping is essential. Rather than trying to get a variable to loop to, the iterator pattern has proven to work better. The iterator has a constructor function that takes in the layer or node that it is iterating through. It then collects the proper information and iterates through the appropriate variable for that object. This pattern is primarily used in the feed forward process. The preprocessor classes also server to work as an iterator in a sense. They iterate through the file, line by line, until the final line is reached.
 
 ## Running the program
 
@@ -87,7 +87,10 @@ For the activation function, a `tanh` function is used. This is a fairly old and
 
 The same principle applies to the loss function, but less so. This NN uses a `Root Mean Squared` loss function. This is sufficient for the datasets used, but wouldn't be ideal for more complicated datasets.
 
+There are existing memory leaks that Valgrind identifies as "possibly lost", "still reachable", and "suppressed". The Valgrind documentation defines these as not true memory leaks and not to worry about them. I'm still worried about them. I have deleted everything I have created on the stack and have not gotten rid of the leaks at the time of this writing.
+
 Finally, there are some exploding/vanishing gradient issues on both datasets. The XOR dataset provides the best accuracies, but because of the randomly initialized beginning connection weights, the gradients can still sometimes "explode" or "vanish". This can be seen when every inference does not return a value (exploding) or when every inference returns either 1 or 0 (vanishing). In this case, simply quit the program and restart to get better results.
+
 
 ## Challenges
 
@@ -128,7 +131,7 @@ In short, yes. The preprocessors classes could be expanded greatly. In practical
 
 With the XOR dataset, it is easy to get >99% accuracy with a 2,2,1 network. This is arguably the easiest dataset possible for a neural network and anything short of 95% is laughable.
 
-The breast cancer dataset is slightly different. While there are easily identifiable patterns, it does make for an interesting 9-dimensional classification problem. Having use this dataset extensively at my job, it's easy to achieve greater than 90% accuracy regularly when using TensorFlow or other deep learning libraries.
+The breast cancer dataset is slightly different. While there are easily identifiable patterns, it does make for an interesting 9-dimensional classification problem. Having use this dataset extensively at my job, it's easy to achieve greater than 90% accuracy regularly when using TensorFlow or other deep learning libraries. With this neural network, I've been steadily getting ~95% accuracies.
 
 **Want to see some of the best worst code you have ever seen?**:
 

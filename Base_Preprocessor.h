@@ -23,13 +23,18 @@ public:
   bool isFinished();
   void getData(std::vector<int> &data);
   void restart();
-  std::vector<int> getNextData(bool & isEnd);
+  std::vector<int> getData();
+  void next();
   virtual int getInputCount() = 0;
   virtual int largestVal() = 0;
+  int getLine();
+
 
 protected:
   std::ifstream dataFile;
   bool isEnd;
+  std::vector<int> nextData;
+  int line;
 };
 
 #endif

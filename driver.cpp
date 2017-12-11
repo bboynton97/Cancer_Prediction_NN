@@ -124,15 +124,17 @@ int main (int argc, char * argv [])
   // For the number of epochs (full runthrough of the dataset)
   for (int e=0; e<epochs; e++) {
     std::cout << "\n***********\n" << "* Epoch " << e+1 << " *\n" << "***********\n" << std::endl;
-    pp->restart(); // Restart the preprocessor (almost works as iterator)
-    int line = 0;
+    //pp->restart(); // Restart the preprocessor (almost works as iterator)
+    //int line = 0;
 
-    while(!pp->isFinished()) { //While the file hasn't ended
-      line++;
+    //while(!pp->isFinished()) { //While the file hasn't ended
+      //line++;
+    for (pp->restart(); !pp->isFinished(); pp->next()) {
       bool isEnd = false; // Apparently eof isn't a great way to check for end of file, so doing it here too
-      std::vector<int> data = pp->getNextData(isEnd); //Get each row of data
+      int line = pp->getLine();
+      std::vector<int> data = pp->getData();//isEnd); //Get each row of data
 
-      if (!isEnd) { //If it's not the last datapoint
+      //if (!isEnd) { //If it's not the last datapoint
         std::vector<float> features; // Get the features (inputs)
         for (int i=0; i<data.size()-1; i++) {
           features.push_back(data.at(i) / pp->largestVal()); //Make that a ratio of possible vals
@@ -144,7 +146,7 @@ int main (int argc, char * argv [])
         net->feedForward(features); //Feed the features into the NN
         //std::vector<float> results = net->getResults(); //We can get the results if we want to see them here
         net->backProp(label); //Send in the real value and have backpropegation train the NN to be a better fit
-      }
+      //}
 
       if (line % 100 == 0 && line >= 100) { //Print stats about every 100 rows trained
         std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;
