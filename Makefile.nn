@@ -31,8 +31,8 @@ LIBPREFIX     = lib
 LIBSUFFIX     =
 GENFLAGS      = -O
 LDLIBS        = -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
-OBJS          = Builder$(OBJEXT) Connection$(OBJEXT) driver$(OBJEXT) Layer$(OBJEXT) Net$(OBJEXT) Node$(OBJEXT) Base_Preprocessor$(OBJEXT) Node_Iterator$(OBJEXT) Layer_Iterator$(OBJEXT) XOR_Preprocessor$(OBJEXT) Cancer_Preprocessor$(OBJEXT)
-SRC           = Builder.cpp Connection.cpp driver.cpp Layer.cpp Net.cpp Node.cpp Base_Preprocessor.cpp Node_Iterator.cpp Layer_Iterator.cpp XOR_Preprocessor.cpp Cancer_Preprocessor.cpp
+OBJS          = builder/Builder$(OBJEXT) connection/Connection$(OBJEXT) driver$(OBJEXT) layer/Layer$(OBJEXT) net/Net$(OBJEXT) node/Node$(OBJEXT) preprocessor/Base_Preprocessor$(OBJEXT) iterators/node/Node_Iterator$(OBJEXT) iterators/layer/Layer_Iterator$(OBJEXT) preprocessor/XOR_Preprocessor$(OBJEXT) preprocessor/Cancer_Preprocessor$(OBJEXT)
+SRC           = builder/Builder.cpp connection/Connection.cpp driver.cpp layer/Layer.cpp net/Net.cpp node/Node.cpp preprocessor/Base_Preprocessor.cpp iterators/node/Node_Iterator.cpp iterators/layer/Layer_Iterator.cpp preprocessor/XOR_Preprocessor.cpp preprocessor/Cancer_Preprocessor.cpp
 LINK.cc       = $(LD) $(LDFLAGS)
 EXPORTFLAGS   =
 DEPLIBS       = $(foreach lib, , $(foreach libpath, ., $(wildcard $(libpath)/lib$(lib).a)))
@@ -50,38 +50,38 @@ $(BIN): $(OBJS) $(DEPLIBS)
 generated: $(GENERATED_DIRTY)
 	@-:
 
-Builder$(OBJEXT): Builder.cpp
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Builder.cpp
+builder/Builder$(OBJEXT): builder/Builder.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) builder/Builder.cpp
 
-Connection$(OBJEXT): Connection.cpp
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Connection.cpp
+connection/Connection$(OBJEXT): connection/Connection.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) connection/Connection.cpp
 
 driver$(OBJEXT): driver.cpp
 	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) driver.cpp
 
-Layer$(OBJEXT): Layer.cpp
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Layer.cpp
+layer/Layer$(OBJEXT): layer/Layer.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) layer/Layer.cpp
 
-Net$(OBJEXT): Net.cpp
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Net.cpp
+net/Net$(OBJEXT): net/Net.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) net/Net.cpp
 
-Node$(OBJEXT): Node.cpp
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Node.cpp
+node/Node$(OBJEXT): node/Node.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) node/Node.cpp
 
-Base_Preprocessor$(OBJEXT): Base_Preprocessor.cpp
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Base_Preprocessor.cpp
+preprocessor/Base_Preprocessor$(OBJEXT): preprocessor/Base_Preprocessor.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) preprocessor/Base_Preprocessor.cpp
 
-Node_Iterator$(OBJEXT): Node_Iterator.cpp
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Node_Iterator.cpp
+iterators/node/Node_Iterator$(OBJEXT): iterators/node/Node_Iterator.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) iterators/node/Node_Iterator.cpp
 
-Layer_Iterator$(OBJEXT): Layer_Iterator.cpp
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Layer_Iterator.cpp
+iterators/layer/Layer_Iterator$(OBJEXT): iterators/layer/Layer_Iterator.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) iterators/layer/Layer_Iterator.cpp
 
-XOR_Preprocessor$(OBJEXT): XOR_Preprocessor.cpp
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) XOR_Preprocessor.cpp
+preprocessor/XOR_Preprocessor$(OBJEXT): preprocessor/XOR_Preprocessor.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) preprocessor/XOR_Preprocessor.cpp
 
-Cancer_Preprocessor$(OBJEXT): Cancer_Preprocessor.cpp
-	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Cancer_Preprocessor.cpp
+preprocessor/Cancer_Preprocessor$(OBJEXT): preprocessor/Cancer_Preprocessor.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) preprocessor/Cancer_Preprocessor.cpp
 
 clean:
 	-$(RM) $(OBJS)

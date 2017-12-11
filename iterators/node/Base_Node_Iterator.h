@@ -8,9 +8,9 @@
 #ifndef _BASE_NODE_ITERATOR_H_
 #define _BASE_NODE_ITERATOR_H_
 
-#include "Abstract_Node.h"
-#include "Node.h"
-#include "Net.h"
+#include "../../node/Abstract_Node.h"
+#include "../../node/Node.h"
+#include "../../net/Net.h"
 
 class Base_Node_Iterator {
 public:

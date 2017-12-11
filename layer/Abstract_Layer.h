@@ -8,7 +8,7 @@
 #ifndef _ABSTRACT_LAYER_H_
 #define _ABSTRACT_LAYER_H_
 
-#include "Abstract_Node.h"
+#include "../node/Abstract_Node.h"
 #include <vector>
 
 //This is basically just a storage and organization object for nodes. It helps it fit the composite pattern better.

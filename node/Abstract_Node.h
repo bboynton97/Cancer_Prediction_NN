@@ -8,8 +8,8 @@
 #ifndef _ABSTRACT_NODE_H_
 #define _ABSTRACT_NODE_H_
 
-//#include "Abstract_Layer.h"
-#include "Connection.h"
+//#include "../layer/Abstract_Layer.h"
+#include "../connection/Connection.h"
 #include <vector>
 #include <cmath>
 #include <string>

@@ -1,4 +1,4 @@
-#include "Base_Preprocessor.h"
+#include "../preprocessor/Base_Preprocessor.h"
 
 Base_Preprocessor::Base_Preprocessor() {
   this->isEnd = false;
@@ -20,7 +20,7 @@ bool Base_Preprocessor::isFinished() {
   return this->isEnd;
 }
 
-void Base_Preprocessor::next() {
+void Base_Preprocessor::next() { //Get the next line of data and save it
   this->line++;
   std::string line;
   std::getline(dataFile, line);
@@ -54,7 +54,7 @@ void Base_Preprocessor::next() {
   }
 }
 
-std::vector<int> Base_Preprocessor::getData() {
+std::vector<int> Base_Preprocessor::getData() { //return that data
   return this->nextData;
 }
 

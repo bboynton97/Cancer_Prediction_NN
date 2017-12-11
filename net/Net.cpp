@@ -5,7 +5,7 @@
 //
 //brboynto
 
-#include "Net.h"
+#include "../net/Net.h"
 
 Net::Net() {
 

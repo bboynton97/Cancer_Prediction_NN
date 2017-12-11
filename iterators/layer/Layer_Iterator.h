@@ -8,9 +8,9 @@
 #ifndef _LAYER_ITERATOR_H_
 #define _LAYER_ITERATOR_H_
 
-#include "Abstract_Layer.h"
-#include "Node.h"
-#include "Net.h"
+#include "../../layer/Abstract_Layer.h"
+#include "../../node/Node.h"
+#include "../../net/Net.h"
 #include "Base_Layer_Iterator.h"
 
 class Net;

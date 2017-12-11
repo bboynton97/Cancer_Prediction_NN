@@ -8,9 +8,9 @@
 #ifndef _ABSTRACT_BUILDER_H_
 #define _ABSTRACT_BUILDER_H_
 
-#include "Layer.h"
-#include "Node.h"
-#include "Net.h"
+#include "../layer/Layer.h"
+#include "../node/Node.h"
+#include "../net/Net.h"
 
 class Abstract_Builder {
 public:

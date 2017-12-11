@@ -7,12 +7,12 @@
 
 #include <iostream>
 #include <vector>
-#include "Abstract_Builder.h"
-#include "Builder.h"
-#include "Net.h"
-#include "Base_Preprocessor.h"
-#include "XOR_Preprocessor.h"
-#include "Cancer_Preprocessor.h"
+#include "builder/Abstract_Builder.h"
+#include "builder/Builder.h"
+#include "net/Net.h"
+#include "preprocessor/Base_Preprocessor.h"
+#include "preprocessor/XOR_Preprocessor.h"
+#include "preprocessor/Cancer_Preprocessor.h"
 #include <memory>
 #include "brandon_print.h"
 
@@ -35,16 +35,14 @@ int main (int argc, char * argv [])
 
   if (dataset == 1) { //In this project, each dataset has it's own preprocessor to get the data
     pp = new XOR_Preprocessor(); //Assign XOR_Preprocessor pointer to Base_Preprocessor
-    std::cout << "Please enter the design of your neural network. Ex: '2,2,1'. Each number corresponds to a layer of nodes. The example has three layers with 2 nodes in the first layer, then 2, then 1.\n\nNote: Your design must begin with 2 nodes and end with 1 node in order to fit the dataset." << std::endl;
   } else if (dataset == 2) {
     pp = new Cancer_Preprocessor(); //Assign Cancer_Preprocessor pointer to Base_Preprocessor
-    std::cout << "Please enter the design of your neural network. Ex: '9,5,1'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 1.\n\nNote: Your design must begin with 9 nodes and end with 1 node in order to fit the dataset." << std::endl;
   } else {
     std::cout << "That is not a valid input. Defaulting to XOR." << '\n';
-    std::cout << "Please enter the design of your neural network. Ex: '9,5,1'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 1.\n\nNote: Your design must begin with 9 nodes and end with 1 node in order to fit the dataset." << std::endl;
     pp = new XOR_Preprocessor();
   }
 
+  std::cout << "Please enter the design of your neural network. Ex: '" << pp->getInputCount() << "," << (int)pp->getInputCount()/2+1 << ",1'. Each number corresponds to a layer of nodes. The example has three layers with " << pp->getInputCount() << " nodes in the first layer, then " << (int)pp->getInputCount()/2+1 << ", then 1.\n\nNote: Your design must begin with " << pp->getInputCount() << " nodes and end with 1 node in order to fit the dataset." << std::endl;
 
   std::string input;  //Get the model data for the shape of the NN
   std::cout << "> ";
@@ -65,9 +63,9 @@ int main (int argc, char * argv [])
   try {
     for (int i=0; i<inputs_s.size(); i++) {
       int val = std::stoi(inputs_s.at(i));
-      if (val > 10) {
-        std::cout << "In this use-case, a layer of more than 10 nodes is not practical. Setting value to 10." << '\n';
-        val = 10;
+      if (val > 15) {
+        std::cout << "In this use-case, a layer of more than 15 nodes is not practical. Setting value to 15." << '\n';
+        val = 15;
       }
       inputs.push_back(val);
     }
@@ -124,29 +122,22 @@ int main (int argc, char * argv [])
   // For the number of epochs (full runthrough of the dataset)
   for (int e=0; e<epochs; e++) {
     std::cout << "\n***********\n" << "* Epoch " << e+1 << " *\n" << "***********\n" << std::endl;
-    //pp->restart(); // Restart the preprocessor (almost works as iterator)
-    //int line = 0;
-
-    //while(!pp->isFinished()) { //While the file hasn't ended
-      //line++;
-    for (pp->restart(); !pp->isFinished(); pp->next()) {
+    for (pp->restart(); !pp->isFinished(); pp->next()) { //Iterate using the preprocessor
       bool isEnd = false; // Apparently eof isn't a great way to check for end of file, so doing it here too
       int line = pp->getLine();
       std::vector<int> data = pp->getData();//isEnd); //Get each row of data
 
-      //if (!isEnd) { //If it's not the last datapoint
-        std::vector<float> features; // Get the features (inputs)
-        for (int i=0; i<data.size()-1; i++) {
-          features.push_back(data.at(i) / pp->largestVal()); //Make that a ratio of possible vals
-        }
+      std::vector<float> features; // Get the features (inputs)
+      for (int i=0; i<data.size()-1; i++) {
+        features.push_back(data.at(i) / pp->largestVal()); //Make that a ratio of possible vals
+      }
 
-        std::vector<int> label = std::vector<int>();
-        label.push_back(data.at(data.size()-1)); // Get the label (correct answer from inputs)
+      std::vector<int> label = std::vector<int>();
+      label.push_back(data.at(data.size()-1)); // Get the label (correct answer from inputs)
 
-        net->feedForward(features); //Feed the features into the NN
-        //std::vector<float> results = net->getResults(); //We can get the results if we want to see them here
-        net->backProp(label); //Send in the real value and have backpropegation train the NN to be a better fit
-      //}
+      net->feedForward(features); //Feed the features into the NN
+      //std::vector<float> results = net->getResults(); //We can get the results if we want to see them here
+      net->backProp(label); //Send in the real value and have backpropegation train the NN to be a better fit
 
       if (line % 100 == 0 && line >= 100) { //Print stats about every 100 rows trained
         std::cout << "~~ Iteration: " << line << " ~~ " << std::endl;

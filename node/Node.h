@@ -8,12 +8,12 @@
 #ifndef _NODE_H_
 #define _NODE_H_
 
-#include "Abstract_Node.h"
+#include "../node/Abstract_Node.h"
 #include <iostream>
 #include <vector>
-#include "Connection.h"
+#include "../connection/Connection.h"
 #include <cstdlib>
-#include "Abstract_Layer.h"
+#include "../layer/Abstract_Layer.h"
 #include <cmath>
 #include <string>
 #include <iostream>

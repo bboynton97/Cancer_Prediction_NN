@@ -16,6 +16,8 @@
 #include <string>
 #include <iostream>
 
+//Works as an iterator in how it passes data
+
 class Base_Preprocessor {
 public:
   Base_Preprocessor();

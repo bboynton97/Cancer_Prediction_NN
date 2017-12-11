@@ -5,7 +5,7 @@
 //
 //brboynto
 
-#include "Builder.h"
+#include "../builder/Builder.h"
 
 Builder::Builder() {
   this->net = new Net();

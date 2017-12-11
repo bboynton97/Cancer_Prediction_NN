@@ -8,13 +8,13 @@
 #ifndef _NET_H_
 #define _NET_H_
 
-#include "Abstract_Layer.h"
+#include "../layer/Abstract_Layer.h"
 #include <iostream>
 #include <math.h>
-#include "Base_Layer_Iterator.h"
-#include "Base_Node_Iterator.h"
-#include "Layer_Iterator.h"
-#include "Node_Iterator.h"
+#include "../iterators/node/Base_Node_Iterator.h"
+#include "../iterators/node/Node_Iterator.h"
+#include "../iterators/layer/Layer_Iterator.h"
+#include "../iterators/node/Base_Node_Iterator.h"
 #include <memory>
 
 class Net {

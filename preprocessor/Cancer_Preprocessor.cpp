@@ -5,11 +5,11 @@
 //
 //brboynto
 
-#include "Cancer_Preprocessor.h"
+#include "../preprocessor/Cancer_Preprocessor.h"
 
 //Constructor
 Cancer_Preprocessor::Cancer_Preprocessor() { //}: dataFile("breast-cancer-honors.csv", std::ios::in) {
-  this->dataFile = std::ifstream("breast-cancer-honors.csv", std::ios::in);
+  this->dataFile = std::ifstream("dataset/breast-cancer-honors.csv", std::ios::in);
 }
 
 Cancer_Preprocessor::~Cancer_Preprocessor() {

@@ -5,7 +5,7 @@
 //
 //brboynto
 
-#include "Node.h"
+#include "../node/Node.h"
 
 Node::Node(int hm_connections, int index) { //: outputValue (0.0) {
   this->index = index;
@@ -98,12 +98,6 @@ void Node::updateInputWeights(Abstract_Layer * previousLayer) {
 
   float _LEARNING_RATE_ = 0.15; //These are configurable variables for me to make the model fit better
   float _ALPHA_ = 0.5;
-
-  // float _LEARNING_RATE_ = 0.015; //These are configurable variables for me to make the model fit better
-  // float _ALPHA_ = 0.8;
-  //
-  // //0.01 - 0.75
-
 
   for (int i = 0; i < previousLayer->size(); i++) {
 		Abstract_Node * node = previousLayer->getNodeAt(i);

@@ -5,7 +5,7 @@
 //
 //brboynto
 
-#include "Connection.h"
+#include "../connection/Connection.h"
 
 Connection::Connection() {
 

@@ -1,0 +1,38 @@
+project(nn) {
+    exename = nn
+
+    Source_Files {
+      builder/Builder.cpp
+      connection/Connection.cpp
+      driver.cpp
+      layer/Layer.cpp
+      net/Net.cpp
+      node/Node.cpp
+      preprocessor/Base_Preprocessor.cpp
+      iterators/node/Node_Iterator.cpp
+      iterators/layer/Layer_Iterator.cpp
+      preprocessor/XOR_Preprocessor.cpp
+      preprocessor/Cancer_Preprocessor.cpp
+    }
+
+    specific (make) {
+        compile_flags += -std=c++11
+    }
+
+    Header_Files {
+      builder/Abstract_Builder.h
+      layer/Abstract_Layer.h
+      node/Abstract_Node.h
+      builder/Builder.h
+      connection/Connection.h
+      layer/Layer.h
+      net/Net.h
+      node/Node.h
+      preprocessor/Base_Preprocessor.h
+      preprocessor/XOR_Preprocessor.h
+      preprocessor/Cancer_Preprocessor.h
+      iterator/node/Base_Node_Iterator.h
+      iterator/layer/Base_Layer_Iterator.h
+      Brandon_Print.h
+    }
+}

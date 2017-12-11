@@ -5,11 +5,11 @@
 //
 //brboynto
 
-#include "XOR_Preprocessor.h"
+#include "../preprocessor/XOR_Preprocessor.h"
 
 //Constructor
 XOR_Preprocessor::XOR_Preprocessor() { //}: dataFile("xor.csv", std::ios::in) {
-  this->dataFile = std::ifstream("xor.csv", std::ios::in);
+  this->dataFile = std::ifstream("dataset/xor.csv", std::ios::in);
 }
 
 XOR_Preprocessor::~XOR_Preprocessor() {
