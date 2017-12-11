@@ -93,6 +93,43 @@ Finally, there are some exploding/vanishing gradient issues on both datasets. Th
 
 Throughout the development process, there were certainly a number of problems that stumped me. Fortunately, with enough thinking, problem solving and the occasional Stack Overflow, the primary goal has been satisfied.
 
+**Building a neural network with OO design**:
+
+This challenge was inherently a part of the project. Neural networks aren't necessarily a good candidate for OO programming. Yes, they do have components that can be encapsulated in classes, however many experts believe unorganized matrix calculations can produce better accuracies in less time. With some whiteboarding and planning, it wasn't difficult to decide what components of the neural network to turn into classes and how to connect them.
+
+**Writing the mathematics**:
+
+Fortunately, [my occupation](http://vemity.com/) has given me a lot of experience with neural networks and other ML algorithms. I was already very familiar with the theory, and with the help of some diagrams and reference code, I could piece the mathematics together pretty easily.
+
+**Getting it to run on Tesla (IUPUI CS SSH server)**:
+
+It doesn't. *Why?*
+Tesla has g++ 4.6.2 installed. The current version is 7.2.x. If you look at [a concrete preprocessor class](./XOR_Preprocessor), it assigns the file to be read in the constructor. This assignment operator for `std::ifstream` is only supported in g++ 5.0+. Because the `ifstream` object is inherited, it cannot be given the filename in an initialization. Because of this, there is no way to support multiple preprocessors (and thus multiple datasets) while still providing support for g++ <5.0.
+
 ## Results
 
 The final neural network has proven to perform relatively effectively. It is by no means groundbreaking, but for a neural network written from scratch, focusing on design patterns over accuracy, it performs well. Not only did I learn a decent bit on how to program a neural network, but I also gained knowledge on how to implement design patterns in a real-world, practical application.
+
+## Additional Notes
+
+**Why the Flyweight pattern was not used**:
+
+Although it was suggested, it seems that the flyweight pattern would not be ideal for this project. It seems that the flyweight pattern is best for cases when you there are a number of objects that are all largely the same. While there are a lot of layers, nodes and connections, each object has specific values that make it unique. Because of this the flyweight pattern doesn't seem to be a good fit.
+
+**Why the Visitor pattern was not used**:
+
+The iterator is used to traverse the network. The network and it's nodes contain the logic for both feed forward and back propagation. To implement the visitor pattern properly, the visitor should be maintaining a state that performs the calculations. Because of the complexity and number of calculations, it is not appropriate to use a visitor for this task.
+
+**Could this program handle other datasets?**:
+
+In short, yes. The preprocessors classes could be expanded greatly. In practical applications, preprocessing can be just as complicated as the actual neural networks. These dataset are well groomed, perfect candidates for neural network training. Other binary classification datasets formatted in csv file style would also work.
+
+**How do accuracies compare to accepted accuracies for these datasets?**:
+
+With the XOR dataset, it is easy to get >99% accuracy with a 2,2,1 network. This is arguably the easiest dataset possible for a neural network and anything short of 95% is laughable.
+
+The breast cancer dataset is slightly different. While there are easily identifiable patterns, it does make for an interesting 9-dimensional classification problem. Having use this dataset extensively at my job, it's easy to achieve greater than 90% accuracy regularly when using TensorFlow or other deep learning libraries.
+
+**Want to see some of the best worst code you have ever seen?**:
+
+Check [this](./brandon_print.h) out. (Extra credit for creativity?)
