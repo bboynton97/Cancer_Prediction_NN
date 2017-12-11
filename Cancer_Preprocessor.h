@@ -22,6 +22,7 @@ class Cancer_Preprocessor : public Base_Preprocessor {
 public:
   Cancer_Preprocessor();
   ~Cancer_Preprocessor();
+  virtual int getInputCount();
 };
 
 #endif

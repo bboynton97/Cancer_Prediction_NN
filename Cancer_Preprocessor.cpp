@@ -15,3 +15,7 @@ Cancer_Preprocessor::Cancer_Preprocessor() { //}: dataFile("breast-cancer-honors
 Cancer_Preprocessor::~Cancer_Preprocessor() {
 
 }
+
+int Cancer_Preprocessor::getInputCount() {
+  return 9;
+}

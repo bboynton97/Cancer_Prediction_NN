@@ -27,6 +27,7 @@ Node::~Node() {
   for (int i=0; i<this->outputConnections.size(); i++) {
    delete this->outputConnections.at(i);
   }
+}
 
 void Node::feedForward(Abstract_Layer * lastLayer) {
   // This is a simple (deep) neural network, so we're only going to use a simple activation function.

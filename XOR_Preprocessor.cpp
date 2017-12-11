@@ -15,3 +15,7 @@ XOR_Preprocessor::XOR_Preprocessor() { //}: dataFile("xor.csv", std::ios::in) {
 XOR_Preprocessor::~XOR_Preprocessor() {
 
 }
+
+int XOR_Preprocessor::getInputCount() {
+  return 2;
+}

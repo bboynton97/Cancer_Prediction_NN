@@ -24,6 +24,7 @@ public:
   void getData(std::vector<int> &data);
   void restart();
   std::vector<int> getNextData(bool & isEnd);
+  virtual int getInputCount() = 0;
 
 protected:
   std::ifstream dataFile;

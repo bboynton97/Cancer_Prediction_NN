@@ -22,6 +22,7 @@ class XOR_Preprocessor : public Base_Preprocessor {
 public:
   XOR_Preprocessor();
   ~XOR_Preprocessor();
+  virtual int getInputCount();
 };
 
 #endif

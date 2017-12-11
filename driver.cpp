@@ -34,6 +34,7 @@ int main (int argc, char * argv [])
     std::cout << "Please enter the design of your neural network. Ex: '9,5,1'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 1.\n\nNote: Your design must begin with 9 nodes and end with 1 node in order to fit the dataset." << std::endl;
   } else {
     std::cout << "That is not a valid input. Defaulting to XOR." << '\n';
+    std::cout << "Please enter the design of your neural network. Ex: '9,5,1'. Each number corresponds to a layer of nodes. The example has three layers with 9 nodes in the first layer, then 5, then 1.\n\nNote: Your design must begin with 9 nodes and end with 1 node in order to fit the dataset." << std::endl;
     pp = new XOR_Preprocessor();
   }
 
@@ -54,11 +55,33 @@ int main (int argc, char * argv [])
   //convert those to ints
   std::vector<int> inputs;
   for (int i=0; i<inputs_s.size(); i++) {
-    inputs.push_back(std::stoi(inputs_s.at(i)));
+    int val = std::stoi(inputs_s.at(i))
+    if (val > 10) {
+      std::cout << "In this use-case, a layer of more than 10 nodes is not practical. Setting value to 10." << '\n';
+      val = 10;
+    }
+    inputs.push_back(val);
+  }
+
+  //User input validation
+  int inCount = pp->getInputCount();
+  if (inputs.at(0) != inCount) {
+    std::cout << "** Your network must start with a layer of " << inCount << " nodes. Your net has been modified to fit that." << '\n';
+    inputs.at(0) = inCount;
+  }
+
+  if (inputs.size() < 3) {
+    int hiddenCount = (int)(inCount/2) + 1;
+    std::cout << "** Your network must have at least 3 layers. Defaulting to " << inCount << "," << hiddenCount << ",1" << '\n';
+    inputs.clear();
+    inputs.push_back(inCount);
+    inputs.push_back(hiddenCount);
+    inputs.push_back(1);
   }
 
   if (inputs.back() != 1) { //In case the user doesn't listen to the instructions
-    throw std::out_of_range("Last layer must have a size of 1 node");
+    std::cout << "** Last layer must have a size of 1 node. Your net has been modified to fit that." << '\n';
+    inputs.back() = 1;
   }
 
   //Use a builder to create the net with these instructions
