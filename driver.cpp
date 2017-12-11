@@ -14,13 +14,17 @@
 #include "XOR_Preprocessor.h"
 #include "Cancer_Preprocessor.h"
 #include <memory>
+#include "brandon_print.h"
 
 int main (int argc, char * argv [])
 {
   std::srand((unsigned)time(0)); //Set random seed value right away so it's out of the way
 
   std::string dataset_s;
-  std::cout << "\n\n---------------------------------------------\n\nWould you like the XOR dataset (1) or the Breast Cancer dataset (2)?\n> ";
+  //std::cout << "\n\n---------------------------------------------\n\nWould you like the XOR dataset (1) or the Breast Cancer dataset (2)?\n> ";
+  Brandon_Print brandon = Brandon_Print();
+  brandon.brandon_printf("\n\n---------------------------------------------\n\nWould you like the XOR dataset (1) or the Breast Cancer dataset (2)?\n> ");
+
   std::getline(std::cin, dataset_s);
 
   Base_Preprocessor * pp;
@@ -55,7 +59,7 @@ int main (int argc, char * argv [])
   //convert those to ints
   std::vector<int> inputs;
   for (int i=0; i<inputs_s.size(); i++) {
-    int val = std::stoi(inputs_s.at(i))
+    int val = std::stoi(inputs_s.at(i));
     if (val > 10) {
       std::cout << "In this use-case, a layer of more than 10 nodes is not practical. Setting value to 10." << '\n';
       val = 10;
