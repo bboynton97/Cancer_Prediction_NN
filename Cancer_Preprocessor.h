@@ -23,6 +23,7 @@ public:
   Cancer_Preprocessor();
   ~Cancer_Preprocessor();
   virtual int getInputCount();
+  virtual int largestVal();
 };
 
 #endif

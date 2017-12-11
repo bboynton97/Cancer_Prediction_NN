@@ -21,7 +21,7 @@ class Net {
 public:
   Net();
   ~Net();
-  void feedForward(std::vector<int> inputs);
+  void feedForward(std::vector<float> inputs);
   void backProp(std::vector<int> targets);
   std::vector<float> getResults();
   void addLayer(Abstract_Layer * layer);

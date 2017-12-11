@@ -133,16 +133,16 @@ int main (int argc, char * argv [])
       std::vector<int> data = pp->getNextData(isEnd); //Get each row of data
 
       if (!isEnd) { //If it's not the last datapoint
-        std::vector<int> features; // Get the features (inputs)
+        std::vector<float> features; // Get the features (inputs)
         for (int i=0; i<data.size()-1; i++) {
-          features.push_back(data.at(i));
+          features.push_back(data.at(i) / pp->largestVal()); //Make that a ratio of possible vals
         }
 
         std::vector<int> label = std::vector<int>();
         label.push_back(data.at(data.size()-1)); // Get the label (correct answer from inputs)
 
         net->feedForward(features); //Feed the features into the NN
-        //std::vector<float> * results = net->getResults(); //We can get the results if we want to see them here
+        //std::vector<float> results = net->getResults(); //We can get the results if we want to see them here
         net->backProp(label); //Send in the real value and have backpropegation train the NN to be a better fit
       }
 
@@ -154,7 +154,7 @@ int main (int argc, char * argv [])
     }
   }
 
-  delete pp;
+
 
   std::cout << "\n\n--------------------------------" << std::endl;
   std::cout << "       Training Finished        " << std::endl;
@@ -183,16 +183,18 @@ int main (int argc, char * argv [])
     }
 
     //convert those to ints
-    std::vector<int> inference;
+    std::vector<float> inference;
     try {
       for (int i=0; i<inference_s_v.size(); i++) {
-        inference.push_back(std::stoi(inference_s_v.at(i)));
+        inference.push_back(std::stoi(inference_s_v.at(i)) / pp->largestVal()); //Make that a ration of vals
       }
     } catch (std::invalid_argument) {
       std::cout << "Invalid input." << '\n';
     }
 
     if (inference.size() > 0) {
+      std::cout << '\n';
+
       net->feedForward(inference); //Feed the data forward
 
       std::vector<float> results = net->getResults(); //Get the result
@@ -208,5 +210,6 @@ int main (int argc, char * argv [])
       std::cout << std::endl;
     }
   }
+  delete pp;
   return 0;
 }

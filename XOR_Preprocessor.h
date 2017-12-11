@@ -23,6 +23,7 @@ public:
   XOR_Preprocessor();
   ~XOR_Preprocessor();
   virtual int getInputCount();
+  virtual int largestVal();
 };
 
 #endif

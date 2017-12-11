@@ -33,9 +33,6 @@ void Node::feedForward(Abstract_Layer * lastLayer) {
   // This is a simple (deep) neural network, so we're only going to use a simple activation function.
   // The math behind this is simple (this is what I do for my job, albeit using libraries)
   // The output value is equal to the summation of each input multiplied by it's weight.
-  //
-  // Normally, that would be multiplied by a bias here too, but for the sake of simplicity (and because this is
-  // being written from scratch and not with a library), I'm not going to add the bias.
 
   float summation = 0.0;
   for (int i=0; i<lastLayer->size(); i++) {
@@ -46,7 +43,6 @@ void Node::feedForward(Abstract_Layer * lastLayer) {
 
   // We've calculated the output value of the node, now we need to normalize it by sending it to an activation function
   this->outputValue = this->activationFunction(summation);
-
 }
 
 void Node::setOutput(float value) {
@@ -102,6 +98,12 @@ void Node::updateInputWeights(Abstract_Layer * previousLayer) {
 
   float _LEARNING_RATE_ = 0.15; //These are configurable variables for me to make the model fit better
   float _ALPHA_ = 0.5;
+
+  // float _LEARNING_RATE_ = 0.015; //These are configurable variables for me to make the model fit better
+  // float _ALPHA_ = 0.8;
+  //
+  // //0.01 - 0.75
+
 
   for (int i = 0; i < previousLayer->size(); i++) {
 		Abstract_Node * node = previousLayer->getNodeAt(i);

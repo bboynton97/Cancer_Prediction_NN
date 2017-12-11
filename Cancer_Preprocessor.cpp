@@ -19,3 +19,7 @@ Cancer_Preprocessor::~Cancer_Preprocessor() {
 int Cancer_Preprocessor::getInputCount() {
   return 9;
 }
+
+int Cancer_Preprocessor::largestVal() {
+  return 9;
+}

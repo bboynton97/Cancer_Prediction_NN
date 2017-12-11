@@ -25,6 +25,7 @@ public:
   void restart();
   std::vector<int> getNextData(bool & isEnd);
   virtual int getInputCount() = 0;
+  virtual int largestVal() = 0;
 
 protected:
   std::ifstream dataFile;

@@ -19,3 +19,7 @@ XOR_Preprocessor::~XOR_Preprocessor() {
 int XOR_Preprocessor::getInputCount() {
   return 2;
 }
+
+int XOR_Preprocessor::largestVal() {
+  return 1;
+}

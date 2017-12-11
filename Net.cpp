@@ -17,12 +17,12 @@ Net::~Net() {
   }
 }
 
-void Net::feedForward(std::vector<int> inputs_i) { //This is what turns the inputs into a prediction
+void Net::feedForward(std::vector<float> inputs) { //This is what turns the inputs into a prediction
 
-  std::vector<float> inputs; //Convert everything to a float
-  for (int i=0; i<inputs_i.size(); i++) {
-    inputs.push_back((int)inputs_i.at(i));
-  }
+  // std::vector<float> inputs; //Convert everything to a float
+  // for (int i=0; i<inputs_i.size(); i++) {
+  //   inputs.push_back((int)inputs_i.at(i));
+  // }
 
   //Give the input neurons initial input values
   for (int i=0; i<inputs.size(); i++) {
