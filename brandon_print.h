@@ -12,25 +12,26 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <math.h>
+#include <math.h> //boat ancor
 
-//The best garbage code that I could write
+// The best garbage code that I could write
+// Demonstrates knowledge of anti-patterns
 
 class Brandon_Print {
 public:
-  Brandon_Print() {
+  Brandon_Print() { //implimentation in header
     brandon2 = new std::vector<std::string>();
   }
   virtual ~Brandon_Print() {
-    delete brandon2;
+    delete brandon2; // Spaghetti Code variable names
   }
   void brandon_printf(std::string brandon) {
     this->brandon2->push_back(brandon);
-    std::printf("%s",brandon2->back().c_str());
+    std::printf("%s",brandon2->back().c_str()); //impropper use of Facade pattern (wrapper around printf)
   }
 
 protected:
-  std::vector<std::string> * brandon2;
+  std::vector<std::string> * brandon2; //Unneccisary pointers
 };
 
 #endif
